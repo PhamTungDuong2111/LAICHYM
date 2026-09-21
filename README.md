@@ -11,31 +11,35 @@
 
 ---
 
-## 🌟 Tính Năng Chính
+## 🌟 Tính Năng Chính (100% MIỄN PHÍ - KHÔNG MẤT TIỀN)
 
-1. **Ghi màn hình 1 chạm (System-Wide Screen Recording):**
-   - Tích hợp `ReplayKit` & `RPSystemBroadcastPickerView`.
-   - Thu đồng thời âm thanh hệ thống (Game/App) và micro bình luận.
-   - Hỗ trợ độ phân giải lên đến 1080p 60 FPS (Full HD).
+> [!NOTE]
+> Ứng dụng đã được cấu hình **100% Miễn phí trọn đời**. Mọi tính năng cao cấp nhất như độ phân giải 1080p, 60 FPS, tắt Watermark logo, Livestream không giới hạn thời lượng đều được mở khóa sẵn mà không yêu cầu thanh toán bất kỳ chi phí nào!
+
+1. **Ghi màn hình 1 chạm (Screen Recording):**
+   - Hỗ trợ cả **Ghi màn hình trực tiếp trong ứng dụng** (sử dụng `RPScreenRecorder.startCapture` + `AVAssetWriter`) lưu trực tiếp ra file MP4 chuẩn không cần App Groups.
+   - Hỗ trợ **Ghi màn hình toàn hệ thống** (Game, App khác) thông qua `ReplayKit Broadcast Extension`.
+   - Thu đồng thời âm thanh hệ thống và micro bình luận tiếng nói.
+   - Độ phân giải sắc nét 1080p 60 FPS Full HD.
+
 2. **Livestream đa nền tảng (RTMP/RTMPS):**
-   - Hỗ trợ phát trực tiếp lên **YouTube Live**, **Facebook Live**, **Twitch**, hoặc bất kỳ **Custom RTMP Server** nào (TikTok Live Studio, Shopee Live, v.v.).
-   - Kiểm tra kết nối TCP socket cổng 1935 và giám sát thông số trực tiếp (Bitrate, FPS, Rớt khung hình, Thời lượng).
+   - **Camera Live:** Phát trực tiếp hình ảnh Camera + Micro lên **YouTube Live**, **Facebook Live**, **Twitch**, hoặc **Custom RTMP** kèm màn hình xem trước và đồng hồ giám sát thời lượng / bitrate thực tế.
+   - **Screen Live:** Phát sóng trực tiếp toàn bộ màn hình khi chơi game.
+   - Tích hợp công cụ **Kiểm tra kết nối RTMP** trước khi phát sóng để đảm bảo đường truyền ổn định.
+
 3. **Face-Cam & Reaction Studio:**
-   - Cửa sổ camera selfie Picture-in-Picture (PiP) nổi, có thể kéo thả di chuyển tự do trên màn hình.
-   - Tùy chỉnh hình dạng: Tròn, Bo góc, Vuông, Bầu dục.
-   - Chế độ **Reaction**: Xem lại video đã quay trong khi camera trước ghi lại phản ứng và giọng nói của bạn, sau đó tự động ghép thành một video hoàn chỉnh.
+   - Cửa sổ camera selfie nổi Picture-in-Picture (PiP), có thể kéo thả di chuyển tự do trên màn hình.
+   - Chế độ **Reaction**: Vừa xem lại video vừa quay lại biểu cảm và giọng nói, sau đó tự động ghép thành video reaction hoàn chỉnh.
+
 4. **Trình biên tập video tích hợp (Video Editor):**
    - **Trim:** Cắt tỉa thời lượng chính xác từng khung hình.
-   - **Crop:** Cắt theo tỉ lệ khung hình chuẩn: 9:16 (TikTok / Reels / Shorts), 16:9 (YouTube), 1:1 (Instagram).
-   - **Voiceover:** Thu âm lồng tiếng bổ sung vào video đã quay kèm bộ trộn âm lượng (Audio Mixer).
-   - **Watermark:** Tùy chọn gắn hoặc gỡ bỏ logo bản quyền.
+   - **Crop:** Cắt theo tỉ lệ chuẩn: 9:16 (TikTok / Reels / Shorts), 16:9 (YouTube), 1:1 (Instagram).
+   - **Voiceover:** Thu âm lồng tiếng bổ sung vào video đã quay.
+   - **Watermark:** Tự do bật hoặc tắt Watermark logo LAICHYM hoàn toàn miễn phí.
+
 5. **Thư viện & Quản lý video (My Recordings):**
-   - Trình phát video chuyên nghiệp hỗ trợ Picture-in-Picture.
    - Lưu video trực tiếp vào Cuộn camera (**Photos / Camera Roll**) bằng `PHPhotoLibrary`.
    - Chia sẻ nhanh qua AirDrop, Tin nhắn, Mạng xã hội (`UIActivityViewController`).
-6. **Gói VIP Premium (StoreKit 2):**
-   - Mở khóa 1080p 60fps, xóa watermark, stream không giới hạn.
-   - Hỗ trợ gói Tuần, Tháng, Năm (với 3 ngày dùng thử miễn phí) và gói Trọn đời.
 
 ---
 
@@ -115,6 +119,19 @@ open LAICHYM.xcodeproj
 ### Bước 4: Build và Trải nghiệm
 - Kết nối iPhone/iPad thật qua cáp hoặc chọn một thiết bị Simulator (ví dụ: iPhone 16 Pro - iOS 18).
 - Nhấn tổ hợp phím **Cmd + R** để biên dịch và khởi chạy ứng dụng.
+
+### ⚠️ Hướng Dẫn Sử Dụng & Kiểm Tra Tính Năng:
+1. **Phát trực tiếp Camera (Camera Live Stream):**
+   - Mở app > chọn **Phát trực tiếp** > chọn tab **Camera**.
+   - Hình ảnh từ camera trước/sau sẽ hiển thị xem trước trực tiếp.
+   - Chọn nền tảng (YouTube / Facebook / Twitch) hoặc Custom RTMP, điền **Khóa luồng (Stream Key)**.
+   - Bấm **BẮT ĐẦU PHÁT TRỰC TIẾP**. Tính năng này chạy trực tiếp qua RTMP Socket, hoạt động ngay cả với tài khoản Apple ID cá nhân miễn phí!
+2. **Ghi hình trực tiếp 1-chạm (Direct In-App Recording):**
+   - Tại trang chủ, bấm vào nút tròn đỏ **GHI HÌNH**.
+   - Ứng dụng ghi hình trực tiếp và tự động xuất ra file MP4 lưu vào Thư viện LAICHYM.
+3. **Quay màn hình toàn hệ thống (System Broadcast - Game/App khác):**
+   - **Lưu ý của Apple:** Apple **không hỗ trợ** tính năng quay màn hình ReplayKit Broadcast trên iOS Simulator (máy ảo). Bạn cần cắm **iPhone/iPad thật** để thử tính năng quay ra ngoài app hoặc game.
+   - Tại trang chủ, bấm vào nút Broadcast bên cạnh dòng chữ *"Quay toàn hệ thống"* hoặc mở **Trung tâm điều khiển (Control Center)** > Nhấn giữ biểu tượng Ghi màn hình > Chọn **LAICHYM** > Bắt đầu truyền phát.
 
 ---
 
