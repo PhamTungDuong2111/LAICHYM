@@ -1,0 +1,24 @@
+# Xcode
+## User settings
+xcuserdata/
+*.xcuserdatad
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+## Build results
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Node.js (Simulator)
+node_modules/
+npm-debug.log*
+
+## macOS & Windows
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes

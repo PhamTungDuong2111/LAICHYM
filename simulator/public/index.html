@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAICHYM - Trình Giả Lập iOS 18 (Screen Recorder & Livestream)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Glow & Mesh -->
+  <div class="bg-mesh">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Left Sidebar: Project & Architecture Info -->
+    <aside class="sidebar-left">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="12" r="5" fill="#FF3B30"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">LAICHYM</h1>
+          <p class="brand-subtitle">iOS Screen Recorder & Livestream</p>
+        </div>
+      </div>
+
+      <div class="badge-tag">
+        <span class="pulse-dot"></span> Tương đương Screen Recorder Z
+      </div>
+
+      <div class="info-card">
+        <h3>Mã Nguồn Native iOS 100%</h3>
+        <p>Được xây dựng bằng <strong>Swift 5.9 + SwiftUI</strong>, sẵn sàng mở trong Xcode trên macOS để build App Store.</p>
+        <div class="tech-tags">
+          <span class="tag">SwiftUI</span>
+          <span class="tag">ReplayKit</span>
+          <span class="tag">Broadcast Ext</span>
+          <span class="tag">AVFoundation</span>
+          <span class="tag">StoreKit 2</span>
+          <span class="tag">RTMP Stream</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>Đặc Điểm Nổi Bật</h3>
+        <ul class="feature-checklist">
+          <li><strong>Ghi màn hình 1 chạm:</strong> Hỗ trợ âm thanh hệ thống + Micro.</li>
+          <li><strong>Phát trực tiếp RTMP:</strong> YouTube, Facebook, Twitch.</li>
+          <li><strong>Face-Cam & Reaction:</strong> Khung camera PiP di chuyển được.</li>
+          <li><strong>Video Editor:</strong> Cắt trim, crop 9:16 TikTok, lồng tiếng.</li>
+          <li><strong>VIP Subscription:</strong> Dùng thử 3 ngày miễn phí.</li>
+        </ul>
+      </div>
+
+      <div class="info-card code-path-card">
+        <h3>Đường Dẫn Dự Án Xcode</h3>
+        <code>d:\LAICHYM\LAICHYM.xcodeproj</code>
+        <p class="hint-text">Toàn bộ file .swift và target Extension đã được tạo sẵn trong thư mục gốc.</p>
+      </div>
+    </aside>
+
+    <!-- Center: iPhone 16 Pro Mockup Running LAICHYM -->
+    <main class="iphone-container">
+      <div class="iphone-frame">
+        <!-- Titanium Edge Reflection -->
+        <div class="iphone-edge"></div>
+
+        <!-- Dynamic Island -->
+        <div class="dynamic-island" id="dynamicIsland">
+          <div class="island-camera"></div>
+          <div class="island-sensor"></div>
+          <div class="island-content" id="islandContent">
+            <div class="island-icon-rec" id="islandRecDot"></div>
+            <span class="island-text" id="islandText">LAICHYM</span>
+            <span class="island-timer" id="islandTimer">00:00</span>
+          </div>
+        </div>
+
+        <!-- iPhone Screen Screen Content -->
+        <div class="iphone-screen">
+          <!-- iOS 18 Status Bar -->
+          <div class="ios-status-bar">
+            <span class="status-time" id="statusTime">09:41</span>
+            <div class="status-icons">
+              <svg class="icon-signal" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="14" width="3" height="6" rx="1"/>
+                <rect x="7" y="11" width="3" height="9" rx="1"/>
+                <rect x="12" y="7" width="3" height="13" rx="1"/>
+                <rect x="17" y="3" width="3" height="17" rx="1"/>
+              </svg>
+              <span class="status-5g">5G</span>
+              <div class="battery-icon">
+                <div class="battery-level"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App Screens Viewport -->
+          <div class="app-viewport">
+            <!-- TAB 1: TRANG CHỦ (HOME) -->
+            <section class="app-page active" id="pageHome">
+              <header class="app-header">
+                <div class="header-logo-group">
+                  <div class="app-logo-badge">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+                      <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+                      <circle cx="12" cy="12" r="5" fill="#FF3B30"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 class="app-logo-text">LAICHYM</h2>
+                    <span class="app-logo-sub">Screen Recorder</span>
+                  </div>
+                </div>
+
+                <div class="header-actions">
+                  <button class="vip-pill-btn" id="openPaywallFromHeader">
+                    <span class="crown-icon">👑</span> VIP
+                  </button>
+                  <button class="icon-circle-btn" id="openSettingsFromHeader">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                    </svg>
+                  </button>
+                </div>
+              </header>
+
+              <!-- VIP Promotion Banner -->
+              <div class="vip-banner" id="vipPromoBanner">
+                <div class="vip-banner-content">
+                  <div class="vip-badge-small">✨ DÙNG THỬ 3 NGÀY MIỄN PHÍ</div>
+                  <h4>Mở khóa LAICHYM PRO VIP</h4>
+                  <p>Quay 1080p 60fps, xóa logo bản quyền, livestream không giới hạn</p>
+                </div>
+                <button class="vip-arrow-btn">➔</button>
+              </div>
+
+              <!-- Main 1-Tap Record Hero Card -->
+              <div class="glass-card record-hero-card">
+                <div class="card-status-header">
+                  <div class="status-indicator">
+                    <span class="status-dot ready" id="statusDot"></span>
+                    <span class="status-label" id="statusLabel">SẴN SÀNG</span>
+                  </div>
+                  <span class="quality-badge" id="heroQualityLabel">1080p • 60 FPS</span>
+                </div>
+
+                <!-- Giant Interactive Record Button -->
+                <div class="big-record-container">
+                  <div class="pulse-ring ring-outer"></div>
+                  <div class="pulse-ring ring-inner"></div>
+                  <button class="big-record-button" id="btnMainRecord">
+                    <div class="record-btn-core">
+                      <div class="record-icon-shape" id="recordIconShape"></div>
+                      <span class="record-btn-text" id="recordBtnText">GHI HÌNH</span>
+                    </div>
+                  </button>
+                </div>
+
+                <p class="record-subtext" id="recordHintText">Chạm để chọn màn hình quay thử nghiệm thực tế</p>
+
+                <div class="divider-line"></div>
+
+                <!-- Quick Hardware Toggles -->
+                <div class="quick-toggles-row">
+                  <button class="toggle-tool-btn active" id="toggleMicBtn">
+                    <div class="toggle-icon-wrap">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                      </svg>
+                    </div>
+                    <span>Microphone</span>
+                  </button>
+
+                  <button class="toggle-tool-btn active" id="toggleAudioBtn">
+                    <div class="toggle-icon-wrap">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                      </svg>
+                    </div>
+                    <span>Âm thanh máy</span>
+                  </button>
+
+                  <button class="toggle-tool-btn" id="toggleFacecamBtn">
+                    <div class="toggle-icon-wrap">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                      </svg>
+                    </div>
+                    <span>Face-Cam</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Tools Grid -->
+              <div class="tools-grid">
+                <div class="tool-card tool-live" id="cardGoLivestream">
+                  <div class="tool-icon-circle">📡</div>
+                  <div class="tool-info">
+                    <h4>Phát trực tiếp</h4>
+                    <p>YouTube, FB, Twitch</p>
+                  </div>
+                </div>
+
+                <div class="tool-card tool-reaction" id="cardGoReaction">
+                  <div class="tool-icon-circle">🎭</div>
+                  <div class="tool-info">
+                    <h4>Reaction Studio</h4>
+                    <p>Webcam & bình luận</p>
+                  </div>
+                </div>
+
+                <div class="tool-card tool-editor" id="cardGoEditor">
+                  <div class="tool-icon-circle">✂️</div>
+                  <div class="tool-info">
+                    <h4>Chỉnh sửa Video</h4>
+                    <p>Cắt, crop, lồng tiếng</p>
+                  </div>
+                </div>
+
+                <div class="tool-card tool-guide" id="cardGoGuide">
+                  <div class="tool-icon-circle">📱</div>
+                  <div class="tool-info">
+                    <h4>Bật Control Center</h4>
+                    <p>Hướng dẫn iOS</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Videos Carousel -->
+              <div class="recent-section">
+                <div class="section-head">
+                  <h3>Video gần đây</h3>
+                  <span class="count-badge" id="recCountBadge">3 video</span>
+                </div>
+                <div class="recent-scroll" id="recentVideosContainer">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+            </section>
+
+            <!-- TAB 2: PHÁT TRỰC TIẾP (LIVESTREAM) -->
+            <section class="app-page" id="pageLive">
+              <header class="page-title-bar">
+                <h2>Phát Trực Tiếp (RTMP)</h2>
+              </header>
+
+              <!-- Platform Tab Pills -->
+              <div class="platform-tabs">
+                <button class="plat-tab active" data-plat="youtube">
+                  <span class="plat-icon red">▶</span> YouTube
+                </button>
+                <button class="plat-tab" data-plat="facebook">
+                  <span class="plat-icon blue">f</span> Facebook
+                </button>
+                <button class="plat-tab" data-plat="twitch">
+                  <span class="plat-icon purple">🎮</span> Twitch
+                </button>
+                <button class="plat-tab" data-plat="custom">
+                  <span class="plat-icon green">🌐</span> Custom
+                </button>
+              </div>
+
+              <!-- Instructions Card -->
+              <div class="glass-card help-box">
+                <div class="help-box-head">
+                  <span class="icon-info">ℹ️</span>
+                  <span class="help-title" id="platHelpTitle">Hướng dẫn YouTube Live</span>
+                </div>
+                <p class="help-desc" id="platHelpDesc">
+                  Truy cập YouTube Studio > Tạo > Phát trực tiếp. Sao chép Khóa luồng (Stream Key) và dán vào ô bên dưới.
+                </p>
+              </div>
+
+              <!-- RTMP Inputs Card -->
+              <div class="glass-card form-card">
+                <div class="form-group">
+                  <label>URL Máy Chủ RTMP</label>
+                  <input type="text" class="ios-input" id="rtmpUrlInput" value="rtmp://a.rtmp.youtube.com/live2">
+                </div>
+
+                <div class="form-group">
+                  <div class="label-row">
+                    <label>Khóa Luồng (Stream Key)</label>
+                    <button class="paste-btn" id="btnPasteKey">Dán mẫu</button>
+                  </div>
+                  <div class="input-with-icon">
+                    <input type="password" class="ios-input" id="rtmpKeyInput" value="live_12345_samplekey_xyz">
+                    <button class="eye-toggle-btn" id="btnToggleKeyEye">👁️</button>
+                  </div>
+                </div>
+
+                <button class="test-conn-btn" id="btnTestRtmp">
+                  ⚡ Kiểm tra kết nối RTMP
+                </button>
+                <div class="test-conn-result" id="testConnResult"></div>
+              </div>
+
+              <!-- Stream Quality Controls -->
+              <div class="glass-card form-card">
+                <div class="form-row-select">
+                  <span>Độ phân giải</span>
+                  <select class="ios-select" id="streamResSelect">
+                    <option value="1080p">1080p Full HD (VIP)</option>
+                    <option value="720p" selected>720p HD</option>
+                    <option value="480p">480p SD</option>
+                  </select>
+                </div>
+
+                <div class="form-row-select">
+                  <span>Tốc độ khung hình</span>
+                  <select class="ios-select" id="streamFpsSelect">
+                    <option value="60">60 FPS (VIP)</option>
+                    <option value="30" selected>30 FPS</option>
+                  </select>
+                </div>
+
+                <div class="form-group bitrate-group">
+                  <div class="label-row">
+                    <span>Bitrate truyền tải</span>
+                    <strong id="bitrateValLabel">3500 kbps</strong>
+                  </div>
+                  <input type="range" class="ios-slider" id="bitrateSlider" min="1000" max="6000" step="250" value="3500">
+                </div>
+              </div>
+
+              <!-- Start Stream Button -->
+              <button class="primary-gradient-btn live-btn" id="btnStartLive">
+                <span class="live-signal-icon">📡</span>
+                <span id="btnLiveText">BẮT ĐẦU PHÁT TRỰC TIẾP</span>
+              </button>
+
+              <div class="live-monitor-card" id="liveMonitorCard" style="display: none;">
+                <div class="monitor-row">
+                  <span>Trạng thái:</span>
+                  <strong class="live-badge-glow">● ĐANG PHÁT</strong>
+                </div>
+                <div class="monitor-grid">
+                  <div>Bitrate: <strong id="monBitrate">3520 kbps</strong></div>
+                  <div>FPS: <strong id="monFps">30</strong></div>
+                  <div>Thời gian: <strong id="monTimer">00:12</strong></div>
+                  <div>Rớt khung hình: <strong>0</strong></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- TAB 3: THƯ VIỆN (LIBRARY) -->
+            <section class="app-page" id="pageLibrary">
+              <header class="page-title-bar">
+                <h2>Thư Viện Video</h2>
+                <div class="view-mode-toggle" id="btnToggleViewMode">
+                  <span id="viewModeIcon">⊞</span>
+                </div>
+              </header>
+
+              <div class="search-bar-ios">
+                <span>🔍</span>
+                <input type="text" placeholder="Tìm kiếm video đã quay..." id="librarySearchInput">
+              </div>
+
+              <div class="video-gallery-grid" id="galleryGrid">
+                <!-- Injected via JS -->
+              </div>
+            </section>
+
+            <!-- TAB 4: CÀI ĐẶT (SETTINGS) -->
+            <section class="app-page" id="pageSettings">
+              <header class="page-title-bar">
+                <h2>Cài Đặt & Hướng Dẫn</h2>
+              </header>
+
+              <!-- Control Center Guide -->
+              <div class="glass-card guide-card">
+                <div class="guide-title">
+                  <span>👆</span> Cách thêm Ghi màn hình vào Trung tâm điều khiển iOS
+                </div>
+                <div class="steps-list">
+                  <div class="step-item">
+                    <span class="step-num">1</span>
+                    <p>Mở <strong>Cài đặt (Settings)</strong> trên iPhone > <strong>Trung tâm điều khiển</strong>.</p>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-num">2</span>
+                    <p>Bấm dấu <strong>(+) màu xanh</strong> tại mục <strong>Ghi màn hình (Screen Recording)</strong>.</p>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-num">3</span>
+                    <p>Vuốt góc phải màn hình xuống > <strong>Nhấn giữ nút Ghi màn hình</strong> > Chọn <strong>LAICHYM</strong>.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Default Preferences -->
+              <div class="glass-card form-card">
+                <h3>Cấu hình ghi hình mặc định</h3>
+                <div class="setting-toggle-row">
+                  <span>Bật Micro thu âm giọng nói</span>
+                  <input type="checkbox" id="settingMicToggle" checked class="ios-switch">
+                </div>
+                <div class="setting-toggle-row">
+                  <span>Thu âm thanh hệ thống (Game/App)</span>
+                  <input type="checkbox" id="settingSysAudioToggle" checked class="ios-switch">
+                </div>
+                <div class="setting-toggle-row">
+                  <span>Hiển thị Logo bản quyền LAICHYM</span>
+                  <input type="checkbox" id="settingWatermarkToggle" checked class="ios-switch">
+                </div>
+              </div>
+
+              <!-- App Info -->
+              <div class="glass-card info-list-card">
+                <div class="info-row">
+                  <span>Phiên bản ứng dụng</span>
+                  <strong>1.0.0 (Build 1)</strong>
+                </div>
+                <div class="info-row">
+                  <span>Target iOS</span>
+                  <strong>iOS 16.0 - 18.x</strong>
+                </div>
+                <div class="info-row">
+                  <span>Gói tài khoản</span>
+                  <strong class="user-tier-label" id="userTierLabel">Miễn phí (Free)</strong>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Floating Face-Cam Draggable Overlay inside iPhone -->
+          <div class="floating-facecam" id="floatingFaceCam" style="display: none;">
+            <video id="facecamVideo" autoplay playsinline muted></video>
+            <div class="facecam-drag-handle">✥</div>
+            <button class="facecam-close-btn" id="btnCloseFaceCam">×</button>
+          </div>
+
+          <!-- Bottom Navigation Tab Bar -->
+          <nav class="ios-tab-bar">
+            <button class="tab-btn active" data-target="pageHome">
+              <span class="tab-icon">⏺</span>
+              <span class="tab-label">Trang chủ</span>
+            </button>
+            <button class="tab-btn" data-target="pageLive">
+              <span class="tab-icon">📡</span>
+              <span class="tab-label">Trực tiếp</span>
+            </button>
+            <button class="tab-btn" data-target="pageLibrary">
+              <span class="tab-icon">📁</span>
+              <span class="tab-label">Thư viện</span>
+            </button>
+            <button class="tab-btn" data-target="pageSettings">
+              <span class="tab-icon">⚙️</span>
+              <span class="tab-label">Cài đặt</span>
+            </button>
+          </nav>
+
+          <!-- iOS Home Indicator -->
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar: Interactive Feature Tools & Live Debug -->
+    <aside class="sidebar-right">
+      <div class="panel-card">
+        <h3>Kiểm Thử Tính Năng Trực Tiếp</h3>
+        <p class="panel-desc">Trình giả lập này liên kết trực tiếp với phần cứng máy tính của bạn:</p>
+
+        <div class="action-buttons-stack">
+          <button class="action-btn" id="triggerWebScreenShare">
+            <span class="btn-icon">🖥️</span>
+            <div>
+              <strong>Thử Quay Màn Hình Thật</strong>
+              <small>Dùng Browser Screen Capture API</small>
+            </div>
+          </button>
+
+          <button class="action-btn" id="triggerWebcamFacecam">
+            <span class="btn-icon">📷</span>
+            <div>
+              <strong>Bật Webcam Thật (Face-Cam)</strong>
+              <small>Hiển thị PiP di chuyển được</small>
+            </div>
+          </button>
+
+          <button class="action-btn" id="triggerOpenEditorModal">
+            <span class="btn-icon">✂️</span>
+            <div>
+              <strong>Mở Trình Biên Tập Video</strong>
+              <small>Cắt ngắn, crop 9:16, lồng tiếng</small>
+            </div>
+          </button>
+
+          <button class="action-btn" id="triggerOpenPaywallModal">
+            <span class="btn-icon">👑</span>
+            <div>
+              <strong>Xem Màn Hình Paywall VIP</strong>
+              <small>Mô phỏng StoreKit 2 Apple Pay</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-card log-card">
+        <div class="log-head">
+          <h3>Nhật Ký ReplayKit & RTMP</h3>
+          <button class="clear-log-btn" id="btnClearLog">Xóa</button>
+        </div>
+        <div class="console-logs" id="consoleLogs">
+          <div class="log-entry info">[System] LAICHYM iOS 18 Simulator đã sẵn sàng.</div>
+          <div class="log-entry success">[ReplayKit] RPBroadcastSampleHandler đã đăng ký.</div>
+          <div class="log-entry info">[AppGroup] group.com.laichym.app container initialized.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- MODAL: VIDEO DETAIL PLAYER -->
+  <div class="modal-backdrop" id="modalVideoPlayer" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalVideoTitle">Chi tiết video</h3>
+        <button class="modal-close-btn" id="btnCloseVideoModal">×</button>
+      </div>
+      <div class="modal-body">
+        <video class="detail-video-player" id="detailVideoElement" controls></video>
+        <div class="video-meta-bar">
+          <span id="metaDuration">00:00</span> • 
+          <span id="metaRes">1080p</span> • 
+          <span id="metaSize">0 MB</span>
+        </div>
+        <div class="video-modal-actions">
+          <button class="action-pill-btn download-btn" id="btnDownloadVideo">
+            📥 Tải video về máy
+          </button>
+          <button class="action-pill-btn edit-btn" id="btnEditThisVideo">
+            ✂️ Chỉnh sửa clip này
+          </button>
+          <button class="action-pill-btn delete-btn" id="btnDeleteVideo">
+            🗑️ Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIDEO EDITOR -->
+  <div class="modal-backdrop" id="modalEditor" style="display: none;">
+    <div class="modal-card editor-modal-card">
+      <div class="modal-header">
+        <h3>Bộ Chỉnh Sửa Video (Video Editor)</h3>
+        <button class="modal-close-btn" id="btnCloseEditorModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="editor-preview-stage" id="editorPreviewStage">
+          <video id="editorVideoElement" controls></video>
+          <div class="watermark-overlay" id="editorWatermarkOverlay">LAICHYM Screen Recorder</div>
+        </div>
+
+        <div class="editor-controls-box">
+          <!-- Timeline Trimmer -->
+          <div class="control-row">
+            <div class="control-label-row">
+              <label>Cắt thời lượng (Trim):</label>
+              <span id="trimValuesLabel">0.0s - 10.0s</span>
+            </div>
+            <div class="range-dual-wrap">
+              <input type="range" id="trimStart" min="0" max="10" step="0.1" value="0">
+              <input type="range" id="trimEnd" min="0" max="10" step="0.1" value="10">
+            </div>
+          </div>
+
+          <!-- Crop Aspect Ratio -->
+          <div class="control-row">
+            <label>Tỉ lệ khung hình (Crop Presets):</label>
+            <div class="ratio-buttons">
+              <button class="ratio-btn active" data-ratio="original">Gốc</button>
+              <button class="ratio-btn" data-ratio="tiktok">9:16 (TikTok)</button>
+              <button class="ratio-btn" data-ratio="youtube">16:9 (YouTube)</button>
+              <button class="ratio-btn" data-ratio="square">1:1 (Insta)</button>
+            </div>
+          </div>
+
+          <!-- Voiceover & Mixer -->
+          <div class="control-row">
+            <div class="control-label-row">
+              <label>Lồng tiếng bình luận (Voiceover):</label>
+              <button class="voice-rec-btn" id="btnToggleVoiceover">🎙️ Bật ghi âm mic</button>
+            </div>
+            <div class="audio-mixer-sliders">
+              <div class="mix-item">
+                <small>Âm thanh gốc: <span id="volOriginalVal">100%</span></small>
+                <input type="range" id="volOriginal" min="0" max="100" value="100">
+              </div>
+              <div class="mix-item">
+                <small>Giọng bình luận: <span id="volVoiceoverVal">100%</span></small>
+                <input type="range" id="volVoiceover" min="0" max="100" value="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Watermark -->
+          <div class="setting-toggle-row">
+            <span>Hiển thị logo LAICHYM</span>
+            <input type="checkbox" id="editorWatermarkCheck" checked class="ios-switch">
+          </div>
+
+          <button class="primary-gradient-btn green-btn" id="btnExportEditedVideo">
+            💾 XUẤT VIDEO ĐÃ CHỈNH SỬA
+          </button>
+          <div class="export-progress-bar" id="exportProgress" style="display: none;">
+            <div class="bar-fill" id="exportBarFill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STOREKIT 2 PAYWALL -->
+  <div class="modal-backdrop" id="modalPaywall" style="display: none;">
+    <div class="modal-card paywall-modal-card">
+      <button class="paywall-close-x" id="btnClosePaywall">×</button>
+      <div class="paywall-header">
+        <div class="paywall-crown">👑</div>
+        <h2>LAICHYM PRO VIP</h2>
+        <p>Mở khóa sức mạnh ghi hình & phát sóng trực tiếp không giới hạn</p>
+      </div>
+
+      <div class="paywall-features">
+        <div class="pw-feat">
+          <span class="pw-check">✓</span>
+          <div>
+            <strong>Độ nét 1080p 60 FPS Full HD</strong>
+            <p>Mượt mà, sống động từng khung hình game</p>
+          </div>
+        </div>
+        <div class="pw-feat">
+          <span class="pw-check">✓</span>
+          <div>
+            <strong>Xóa bỏ hoàn toàn Logo bản quyền</strong>
+            <p>Video sạch sẽ, sẵn sàng đăng tải đa nền tảng</p>
+          </div>
+        </div>
+        <div class="pw-feat">
+          <span class="pw-check">✓</span>
+          <div>
+            <strong>Livestream không giới hạn thời lượng</strong>
+            <p>Phát liên tục lên YouTube, Facebook, Twitch</p>
+          </div>
+        </div>
+        <div class="pw-feat">
+          <span class="pw-check">✓</span>
+          <div>
+            <strong>Mở khóa toàn bộ Video Editor</strong>
+            <p>Cắt ghép không giới hạn, crop tỉ lệ TikTok</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="paywall-plans">
+        <div class="pw-plan-card" data-plan="monthly">
+          <div class="pw-plan-info">
+            <strong>Hàng Tháng</strong>
+            <small>Dùng thử 3 ngày miễn phí</small>
+          </div>
+          <div class="pw-plan-price">
+            <span>99.000 đ</span>
+            <small>/tháng</small>
+          </div>
+        </div>
+
+        <div class="pw-plan-card active" data-plan="yearly">
+          <span class="popular-ribbon">TIẾT KIỆM 50%</span>
+          <div class="pw-plan-info">
+            <strong>Hàng Năm</strong>
+            <small>Dùng thử 3 ngày miễn phí</small>
+          </div>
+          <div class="pw-plan-price">
+            <span>599.000 đ</span>
+            <small>/năm (~49k/tháng)</small>
+          </div>
+        </div>
+
+        <div class="pw-plan-card" data-plan="lifetime">
+          <div class="pw-plan-info">
+            <strong>Trọn Đời (Lifetime)</strong>
+            <small>Thanh toán 1 lần duy nhất</small>
+          </div>
+          <div class="pw-plan-price">
+            <span>999.000 đ</span>
+            <small>Vĩnh viễn</small>
+          </div>
+        </div>
+      </div>
+
+      <button class="paywall-cta-btn" id="btnSubscribeVIP">
+        DÙNG THỬ 3 NGÀY MIỄN PHÍ
+      </button>
+
+      <div class="paywall-footer-links">
+        <button id="btnRestorePurchase">Khôi phục mua hàng</button> • 
+        <span>Điều khoản</span> • 
+        <span>Bảo mật</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

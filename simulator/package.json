@@ -1,0 +1,18 @@
+{
+  "name": "laichym-ios-simulator",
+  "version": "1.0.0",
+  "description": "LAICHYM iOS 18 Interactive Prototype & Simulator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "laichym",
+    "ios-simulator",
+    "screen-recorder",
+    "livestream"
+  ],
+  "author": "LAICHYM Team",
+  "license": "MIT"
+}
