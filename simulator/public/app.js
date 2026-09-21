@@ -10,7 +10,7 @@
     isRecording: false,
     isLiveStreaming: false,
     isFaceCamActive: false,
-    isVIP: false,
+    isVIP: true,
     activeTab: 'pageHome',
     selectedPlatform: 'youtube',
     recordDuration: 0,

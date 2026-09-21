@@ -123,8 +123,8 @@
                 </div>
 
                 <div class="header-actions">
-                  <button class="vip-pill-btn" id="openPaywallFromHeader">
-                    <span class="crown-icon">👑</span> VIP
+                  <button class="vip-pill-btn" id="openPaywallFromHeader" style="background: rgba(52, 199, 89, 0.2); border-color: rgba(52, 199, 89, 0.5); color: #34c759;">
+                    <span class="crown-icon">✓</span> MIỄN PHÍ
                   </button>
                   <button class="icon-circle-btn" id="openSettingsFromHeader">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -134,12 +134,12 @@
                 </div>
               </header>
 
-              <!-- VIP Promotion Banner -->
-              <div class="vip-banner" id="vipPromoBanner">
+              <!-- Free Banner -->
+              <div class="vip-banner" id="vipPromoBanner" style="background: linear-gradient(135deg, rgba(52, 199, 89, 0.15), rgba(0, 122, 255, 0.15)); border-color: rgba(52, 199, 89, 0.4);">
                 <div class="vip-banner-content">
-                  <div class="vip-badge-small">✨ DÙNG THỬ 3 NGÀY MIỄN PHÍ</div>
-                  <h4>Mở khóa LAICHYM PRO VIP</h4>
-                  <p>Quay 1080p 60fps, xóa logo bản quyền, livestream không giới hạn</p>
+                  <div class="vip-badge-small" style="background: #34c759; color: white;">✨ BẢN QUYỀN VĨNH VIỄN</div>
+                  <h4>LAICHYM Hoàn Toàn Miễn Phí</h4>
+                  <p>Mở khóa 1080p 60fps, tắt logo bản quyền, livestream không giới hạn không mất tiền</p>
                 </div>
                 <button class="vip-arrow-btn">➔</button>
               </div>
@@ -664,45 +664,23 @@
         </div>
       </div>
 
-      <!-- Plan Cards -->
+      <!-- Free Lifetime Badge -->
       <div class="paywall-plans">
-        <div class="pw-plan-card" data-plan="monthly">
+        <div class="pw-plan-card active" data-plan="lifetime" style="border-color: #34c759;">
+          <span class="popular-ribbon" style="background: #34c759; color: white;">HOÀN TOÀN MIỄN PHÍ</span>
           <div class="pw-plan-info">
-            <strong>Hàng Tháng</strong>
-            <small>Dùng thử 3 ngày miễn phí</small>
+            <strong>Bản Quyền Vĩnh Viễn</strong>
+            <small>Không thu bất kỳ khoản phí nào</small>
           </div>
           <div class="pw-plan-price">
-            <span>99.000 đ</span>
-            <small>/tháng</small>
-          </div>
-        </div>
-
-        <div class="pw-plan-card active" data-plan="yearly">
-          <span class="popular-ribbon">TIẾT KIỆM 50%</span>
-          <div class="pw-plan-info">
-            <strong>Hàng Năm</strong>
-            <small>Dùng thử 3 ngày miễn phí</small>
-          </div>
-          <div class="pw-plan-price">
-            <span>599.000 đ</span>
-            <small>/năm (~49k/tháng)</small>
-          </div>
-        </div>
-
-        <div class="pw-plan-card" data-plan="lifetime">
-          <div class="pw-plan-info">
-            <strong>Trọn Đời (Lifetime)</strong>
-            <small>Thanh toán 1 lần duy nhất</small>
-          </div>
-          <div class="pw-plan-price">
-            <span>999.000 đ</span>
-            <small>Vĩnh viễn</small>
+            <span style="color: #34c759;">0 đ</span>
+            <small>Trọn đời</small>
           </div>
         </div>
       </div>
 
-      <button class="paywall-cta-btn" id="btnSubscribeVIP">
-        DÙNG THỬ 3 NGÀY MIỄN PHÍ
+      <button class="paywall-cta-btn" id="btnSubscribeVIP" style="background: linear-gradient(135deg, #34c759, #28a745);">
+        BẮT ĐẦU SỬ DỤNG NGAY
       </button>
 
       <div class="paywall-footer-links">
