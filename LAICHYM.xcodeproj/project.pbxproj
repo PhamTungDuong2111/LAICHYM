@@ -169,18 +169,82 @@
 		A10000040000000000000009 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A10000040000000000000011 /* Home */,
+				A10000040000000000000012 /* Livestream */,
+				A10000040000000000000013 /* Reaction */,
+				A10000040000000000000014 /* Editor */,
+				A10000040000000000000015 /* Library */,
+				A10000040000000000000016 /* Settings */,
+				A10000040000000000000017 /* Premium */,
+				A10000040000000000000018 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000011 /* Home */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000014 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000012 /* Livestream */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000015 /* LivestreamView.swift */,
+			);
+			path = Livestream;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000013 /* Reaction */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000016 /* ReactionStudioView.swift */,
+			);
+			path = Reaction;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000014 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000017 /* VideoEditorView.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000015 /* Library */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000018 /* RecordingsGalleryView.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000016 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000019 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000017 /* Premium */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000020 /* PaywallView.swift */,
+			);
+			path = Premium;
+			sourceTree = "<group>";
+		};
+		A10000040000000000000018 /* Components */ = {
+			isa = PBXGroup;
+			children = (
 				A10000020000000000000021 /* BroadcastPickerRepresentable.swift */,
 				A10000020000000000000022 /* CameraPreviewRepresentable.swift */,
 				A10000020000000000000023 /* VideoPlayerRepresentable.swift */,
 			);
-			path = Views;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		A10000040000000000000010 /* Resources */ = {
