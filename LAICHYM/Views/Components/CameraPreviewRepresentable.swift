@@ -32,6 +32,21 @@ public class CameraPreviewUIView: UIView {
     }
 }
 
+// MARK: - Type-Erased Shape Wrapper
+public struct AnyShape: Shape {
+    private let _path: (CGRect) -> Path
+
+    public init<S: Shape>(_ shape: S) {
+        _path = { rect in
+            shape.path(in: rect)
+        }
+    }
+
+    public func path(in rect: CGRect) -> Path {
+        _path(rect)
+    }
+}
+
 // MARK: - Floating FaceCam Overlay View
 public struct FloatingFaceCamView: View {
     @ObservedObject var faceCam = FaceCamService.shared
@@ -75,17 +90,16 @@ public struct FloatingFaceCamView: View {
         }
     }
     
-    @ViewBuilder
-    private var shapeView: some Shape {
+    private var shapeView: AnyShape {
         switch faceCam.currentShape {
         case .circle:
-            Circle()
+            return AnyShape(Circle())
         case .roundedRect:
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
+            return AnyShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         case .square:
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            return AnyShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         case .oval:
-            Capsule()
+            return AnyShape(Capsule())
         }
     }
 }
