@@ -467,12 +467,14 @@ public struct LivestreamView: View {
         isTestingConnection = true
         testResult = nil
         
-        rtmpStreamer.testConnection(url: serverUrl, streamKey: streamKey) { success, error in
-            isTestingConnection = false
-            if success {
-                testResult = (true, "Kết nối tới máy chủ RTMP thành công!")
-            } else {
-                testResult = (false, error ?? "Không thể kết nối máy chủ RTMP")
+        rtmpStreamer.testConnection(url: serverUrl, streamKey: streamKey) { success, message in
+            DispatchQueue.main.async {
+                self.isTestingConnection = false
+                if success {
+                    self.testResult = (true, message ?? "Kết nối tới máy chủ RTMP thành công!")
+                } else {
+                    self.testResult = (false, message ?? "Không thể kết nối máy chủ RTMP")
+                }
             }
         }
     }

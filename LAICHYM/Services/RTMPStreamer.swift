@@ -158,6 +158,20 @@ public class RTMPStreamer: NSObject, ObservableObject {
         }
     }
     
+    // MARK: - Helper: Create Network Parameters (TLS for RTMPS / TCP for RTMP)
+    private func createParameters(isSecure: Bool) -> NWParameters {
+        let tcpOptions = NWProtocolTCP.Options()
+        tcpOptions.enableKeepalive = true
+        tcpOptions.keepaliveIdle = 10
+        
+        if isSecure {
+            let tlsOptions = NWProtocolTLS.Options()
+            return NWParameters(tls: tlsOptions, tcp: tcpOptions)
+        } else {
+            return NWParameters(tls: nil, tcp: tcpOptions)
+        }
+    }
+    
     // MARK: - Socket Connection & RTMP Handshake
     private func connectSocket(destination: StreamDestination, completion: @escaping (Bool, String?) -> Void) {
         guard let urlComponents = URL(string: destination.serverUrl),
@@ -166,27 +180,51 @@ public class RTMPStreamer: NSObject, ObservableObject {
             return
         }
         
-        let port = NWEndpoint.Port(rawValue: UInt16(urlComponents.port ?? 1935)) ?? NWEndpoint.Port(integerLiteral: 1935)
+        let isSecure = (urlComponents.scheme?.lowercased() == "rtmps") || (urlComponents.port == 443)
+        let defaultPort: UInt16 = isSecure ? 443 : 1935
+        let portNum = UInt16(urlComponents.port ?? Int(defaultPort))
+        let port = NWEndpoint.Port(rawValue: portNum) ?? NWEndpoint.Port(integerLiteral: defaultPort)
         let endpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: port)
         
-        let params = NWParameters.tcp
+        let params = createParameters(isSecure: isSecure)
         let conn = NWConnection(to: endpoint, using: params)
         self.tcpConnection = conn
+        
+        var hasResponded = false
         
         conn.stateUpdateHandler = { [weak self] newState in
             switch newState {
             case .ready:
-                self?.performRtmpHandshake(connection: conn, completion: completion)
+                if !hasResponded {
+                    hasResponded = true
+                    self?.performRtmpHandshake(connection: conn, completion: completion)
+                }
             case .failed(let error):
-                completion(false, "Lỗi kết nối tới \(host): \(error.localizedDescription)")
+                if !hasResponded {
+                    hasResponded = true
+                    completion(false, "Lỗi kết nối tới \(host):\(portNum): \(error.localizedDescription)")
+                }
             case .waiting(let error):
-                completion(false, "Không thể kết nối máy chủ: \(error.localizedDescription)")
+                break
             default:
                 break
             }
         }
         
         conn.start(queue: .global())
+        
+        // Timeout 10s
+        DispatchQueue.global().asyncAfter(deadline: .now() + 10.0) { [weak self] in
+            if !hasResponded {
+                hasResponded = true
+                self?.tcpConnection?.cancel()
+                self?.tcpConnection = nil
+                DispatchQueue.main.async {
+                    self?.state = .failed
+                    completion(false, "Hết thời gian kết nối tới \(host) (Timeout)")
+                }
+            }
+        }
     }
     
     private func performRtmpHandshake(connection: NWConnection, completion: @escaping (Bool, String?) -> Void) {
@@ -195,6 +233,10 @@ public class RTMPStreamer: NSObject, ObservableObject {
         // RTMP C0 + C1 Handshake packet (1537 bytes)
         var c0c1 = Data(count: 1537)
         c0c1[0] = 0x03 // RTMP version 3
+        let timestamp = UInt32(Date().timeIntervalSince1970).bigEndian
+        withUnsafeBytes(of: timestamp) { ptr in
+            c0c1.replaceSubrange(1..<5, with: ptr)
+        }
         
         connection.send(content: c0c1, completion: .contentProcessed({ error in
             if let error = error {
@@ -203,10 +245,13 @@ public class RTMPStreamer: NSObject, ObservableObject {
             }
             
             // Đọc phản hồi S0 + S1 + S2
-            connection.receive(minimumIncompleteLength: 1537, maximumLength: 3073) { data, _, isComplete, err in
-                if data != nil {
+            connection.receive(minimumIncompleteLength: 1, maximumLength: 4096) { data, _, isComplete, err in
+                if let data = data, !data.isEmpty {
                     // Gửi C2 để hoàn tất bắt tay
-                    let c2 = Data(count: 1536)
+                    var c2 = Data(count: 1536)
+                    if data.count >= 1537 {
+                        c2 = data.subdata(in: 1..<1537)
+                    }
                     connection.send(content: c2, completion: .contentProcessed({ _ in
                         completion(true, nil)
                     }))
@@ -217,33 +262,62 @@ public class RTMPStreamer: NSObject, ObservableObject {
         }))
     }
     
-    // MARK: - Test Connection
+    // MARK: - Test Connection (Hỗ trợ cả RTMPS 443 và RTMP 1935)
     public func testConnection(url: String, streamKey: String, completion: @escaping (Bool, String?) -> Void) {
         guard let urlComponents = URL(string: url), let host = urlComponents.host else {
             completion(false, "URL máy chủ RTMP không hợp lệ")
             return
         }
         
-        let port = NWEndpoint.Port(rawValue: UInt16(urlComponents.port ?? 1935)) ?? NWEndpoint.Port(integerLiteral: 1935)
+        let isSecure = (urlComponents.scheme?.lowercased() == "rtmps") || (urlComponents.port == 443)
+        let defaultPort: UInt16 = isSecure ? 443 : 1935
+        let portNum = UInt16(urlComponents.port ?? Int(defaultPort))
+        let port = NWEndpoint.Port(rawValue: portNum) ?? NWEndpoint.Port(integerLiteral: defaultPort)
         let endpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: port)
         
-        let params = NWParameters.tcp
+        let params = createParameters(isSecure: isSecure)
         let conn = NWConnection(to: endpoint, using: params)
+        
+        var hasResponded = false
         
         conn.stateUpdateHandler = { newState in
             switch newState {
             case .ready:
-                conn.cancel()
-                DispatchQueue.main.async { completion(true, nil) }
+                if !hasResponded {
+                    hasResponded = true
+                    conn.cancel()
+                    DispatchQueue.main.async {
+                        let proto = isSecure ? "RTMPS (Bảo mật TLS)" : "RTMP"
+                        completion(true, "Kết nối tới \(host):\(portNum) qua \(proto) thành công!")
+                    }
+                }
             case .failed(let error):
-                conn.cancel()
-                DispatchQueue.main.async { completion(false, "Lỗi kết nối tới \(host): \(error.localizedDescription)") }
+                if !hasResponded {
+                    hasResponded = true
+                    conn.cancel()
+                    DispatchQueue.main.async {
+                        completion(false, "Lỗi kết nối tới \(host):\(portNum): \(error.localizedDescription)")
+                    }
+                }
+            case .waiting(let error):
+                break
             default:
                 break
             }
         }
         
         conn.start(queue: .global())
+        
+        // Timeout 8s
+        DispatchQueue.global().asyncAfter(deadline: .now() + 8.0) {
+            if !hasResponded {
+                hasResponded = true
+                conn.cancel()
+                DispatchQueue.main.async {
+                    completion(false, "Hết thời gian chờ phản hồi từ \(host) (Timeout)")
+                }
+            }
+        }
     }
     
     // MARK: - Timer
