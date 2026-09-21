@@ -30,6 +30,13 @@
 	<string>LAICHYM cần quyền truy cập Thư viện ảnh để lưu các video đã quay vào Cuộn camera của bạn.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>LAICHYM cần quyền lưu video đã xuất vào Thư viện ảnh.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>LAICHYM cần quyền mạng nội bộ để kết nối và truyền phát video qua giao thức RTMP.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

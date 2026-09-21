@@ -31,13 +31,29 @@ public class StorageManager: ObservableObject {
     }
     
     public func loadRecordings() {
-        let dir = storageDirectoryURL
-        guard let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: [.contentModificationDateKey, .fileSizeKey], options: .skipsHiddenFiles) else {
-            self.recordings = []
-            return
+        var directoriesToScan: [URL] = [
+            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("Recordings", isDirectory: true),
+            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        ]
+        
+        if let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: UserSettings.appGroupId) {
+            directoriesToScan.insert(sharedContainer.appendingPathComponent("Recordings", isDirectory: true), at: 0)
         }
         
-        let videoFiles = files.filter { $0.pathExtension.lowercased() == "mp4" || $0.pathExtension.lowercased() == "mov" }
+        var seenFileNames = Set<String>()
+        var videoFiles: [URL] = []
+        
+        for dir in directoriesToScan {
+            if let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: [.contentModificationDateKey, .fileSizeKey], options: .skipsHiddenFiles) {
+                for file in files {
+                    let ext = file.pathExtension.lowercased()
+                    if (ext == "mp4" || ext == "mov") && !seenFileNames.contains(file.lastPathComponent) {
+                        seenFileNames.insert(file.lastPathComponent)
+                        videoFiles.append(file)
+                    }
+                }
+            }
+        }
         
         var items: [RecordingItem] = []
         for file in videoFiles {
@@ -71,7 +87,20 @@ public class StorageManager: ObservableObject {
     }
     
     public func fileUrl(for item: RecordingItem) -> URL {
-        return storageDirectoryURL.appendingPathComponent(item.fileName)
+        let primary = storageDirectoryURL.appendingPathComponent(item.fileName)
+        if FileManager.default.fileExists(atPath: primary.path) {
+            return primary
+        }
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let inDocRecordings = docs.appendingPathComponent("Recordings").appendingPathComponent(item.fileName)
+        if FileManager.default.fileExists(atPath: inDocRecordings.path) {
+            return inDocRecordings
+        }
+        let inDocs = docs.appendingPathComponent(item.fileName)
+        if FileManager.default.fileExists(atPath: inDocs.path) {
+            return inDocs
+        }
+        return primary
     }
     
     public func generateThumbnail(for item: RecordingItem, completion: @escaping (UIImage?) -> Void) {

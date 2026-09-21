@@ -139,6 +139,21 @@ public struct SettingsView: View {
                     .pickerStyle(MenuPickerStyle())
                     .accentColor(.red)
                 }
+                
+                Divider().background(Color.white.opacity(0.1))
+                
+                // Watermark
+                Toggle(isOn: $userSettings.showWatermark) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Chèn Watermark logo LAICHYM")
+                            .font(.system(size: 13))
+                            .foregroundColor(.white.opacity(0.8))
+                        Text("Mặc định Tắt (hoàn toàn miễn phí)")
+                            .font(.system(size: 11))
+                            .foregroundColor(.white.opacity(0.4))
+                    }
+                }
+                .accentColor(.red)
             }
         }
     }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Home Dashboard View
+// MARK: - Home Dashboard View (100% Free Forever)
 public struct HomeView: View {
     @ObservedObject var replayKit = ReplayKitManager.shared
     @ObservedObject var storage = StorageManager.shared
@@ -10,16 +10,18 @@ public struct HomeView: View {
     @State private var showLivestreamSheet = false
     @State private var showReactionSheet = false
     @State private var showEditorSheet = false
-    @State private var showPaywall = false
+    @State private var showAboutSheet = false
     @State private var showSettings = false
     @State private var selectedVideoForDetail: RecordingItem? = nil
+    @State private var recordModeSheet = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     public init() {}
     
     public var body: some View {
         NavigationView {
             ZStack {
-                // Background Gradient
                 Color(red: 0.06, green: 0.08, blue: 0.12).ignoresSafeArea()
                 
                 ScrollView(showsIndicators: false) {
@@ -27,10 +29,8 @@ public struct HomeView: View {
                         // Header Bar
                         headerView
                         
-                        // VIP Banner
-                        if !userSettings.isVIP {
-                            vipPromoBanner
-                        }
+                        // 100% Free Feature Highlight Banner
+                        freePromoBanner
                         
                         // Hero 1-Tap Record Card
                         recordHeroCard
@@ -60,7 +60,7 @@ public struct HomeView: View {
             .sheet(isPresented: $showEditorSheet) {
                 VideoEditorView()
             }
-            .sheet(isPresented: $showPaywall) {
+            .sheet(isPresented: $showAboutSheet) {
                 PaywallView()
             }
             .sheet(isPresented: $showSettings) {
@@ -68,6 +68,9 @@ public struct HomeView: View {
             }
             .sheet(item: $selectedVideoForDetail) { item in
                 VideoDetailSheet(item: item)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Thông báo"), message: Text(alertMessage), dismissButton: .default(Text("Đã hiểu")))
             }
         }
     }
@@ -104,27 +107,19 @@ public struct HomeView: View {
             Spacer()
             
             HStack(spacing: 12) {
-                Button(action: { showPaywall = true }) {
+                Button(action: { showAboutSheet = true }) {
                     HStack(spacing: 4) {
-                        Image(systemName: "crown.fill")
-                            .foregroundColor(.yellow)
-                            .font(.system(size: 12))
-                        Text(userSettings.isVIP ? "PRO" : "VIP")
-                            .font(.system(size: 12, weight: .bold))
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundColor(.green)
+                            .font(.system(size: 13))
+                        Text("MIỄN PHÍ")
+                            .font(.system(size: 11, weight: .bold))
                             .foregroundColor(.white)
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(
-                        Capsule().fill(
-                            LinearGradient(
-                                colors: [Color.yellow.opacity(0.3), Color.orange.opacity(0.3)],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                    )
-                    .overlay(Capsule().stroke(Color.yellow.opacity(0.6), lineWidth: 1))
+                    .background(Capsule().fill(Color.green.opacity(0.2)))
+                    .overlay(Capsule().stroke(Color.green.opacity(0.5), lineWidth: 1))
                 }
                 
                 Button(action: { showSettings = true }) {
@@ -138,42 +133,40 @@ public struct HomeView: View {
         }
     }
     
-    // MARK: - VIP Promo Banner
-    private var vipPromoBanner: some View {
-        Button(action: { showPaywall = true }) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "sparkles")
-                            .foregroundColor(.yellow)
-                        Text("Dùng thử VIP 3 ngày miễn phí")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    Text("Quay 1080p 60fps, xóa logo bản quyền, livestream không giới hạn")
-                        .font(.system(size: 11))
-                        .foregroundColor(.white.opacity(0.8))
-                        .lineLimit(1)
+    // MARK: - 100% Free Promo Banner
+    private var freePromoBanner: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 6) {
+                    Image(systemName: "sparkles")
+                        .foregroundColor(.yellow)
+                    Text("Ứng dụng mở khóa toàn bộ tính năng Miễn phí")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
                 }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.white.opacity(0.6))
-                    .font(.system(size: 13, weight: .semibold))
+                Text("Quay 1080p 60fps, xóa logo, livestream không giới hạn hoàn toàn miễn phí")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.8))
+                    .lineLimit(1)
             }
-            .padding(14)
-            .background(
-                LinearGradient(
-                    colors: [Color(red: 0.35, green: 0.1, blue: 0.6), Color(red: 0.15, green: 0.1, blue: 0.35)],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .cornerRadius(16)
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.purple.opacity(0.5), lineWidth: 1)
-            )
+            Spacer()
+            Image(systemName: "heart.fill")
+                .foregroundColor(.red)
+                .font(.system(size: 16))
         }
+        .padding(14)
+        .background(
+            LinearGradient(
+                colors: [Color(red: 0.1, green: 0.3, blue: 0.2), Color(red: 0.05, green: 0.15, blue: 0.1)],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.green.opacity(0.4), lineWidth: 1)
+        )
     }
     
     // MARK: - Hero 1-Tap Record Card
@@ -184,11 +177,11 @@ public struct HomeView: View {
                 HStack {
                     HStack(spacing: 6) {
                         Circle()
-                            .fill(replayKit.isBroadcastingSystem || replayKit.isRecordingInApp ? Color.red : Color.green)
+                            .fill(replayKit.isRecording || replayKit.isBroadcastingSystem ? Color.red : Color.green)
                             .frame(width: 8, height: 8)
-                        Text(replayKit.isBroadcastingSystem || replayKit.isRecordingInApp ? "ĐANG GHI MÀN HÌNH" : "SẴN SÀNG")
+                        Text(replayKit.isRecording || replayKit.isBroadcastingSystem ? "ĐANG GHI HÌNH" : "SẴN SÀNG")
                             .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(replayKit.isBroadcastingSystem || replayKit.isRecordingInApp ? .red : .green)
+                            .foregroundColor(replayKit.isRecording || replayKit.isBroadcastingSystem ? .red : .green)
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
@@ -196,7 +189,7 @@ public struct HomeView: View {
                     
                     Spacer()
                     
-                    if replayKit.isBroadcastingSystem || replayKit.isRecordingInApp {
+                    if replayKit.isRecording || replayKit.isBroadcastingSystem {
                         Text(String(format: "%02d:%02d", Int(replayKit.recordingDuration) / 60, Int(replayKit.recordingDuration) % 60))
                             .font(.system(size: 15, weight: .bold, design: .monospaced))
                             .foregroundColor(.red)
@@ -219,35 +212,46 @@ public struct HomeView: View {
                         .frame(width: 110, height: 110)
                     
                     // Main Record Trigger
-                    LinearGradient(
-                        colors: [Color(red: 1.0, green: 0.25, blue: 0.25), Color(red: 0.8, green: 0.0, blue: 0.1)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .frame(width: 84, height: 84)
-                    .clipShape(Circle())
-                    .shadow(color: .red.opacity(0.5), radius: 15, x: 0, y: 5)
-                    
-                    VStack(spacing: 4) {
-                        Image(systemName: replayKit.isBroadcastingSystem || replayKit.isRecordingInApp ? "stop.fill" : "record.circle")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(.white)
-                        Text(replayKit.isBroadcastingSystem || replayKit.isRecordingInApp ? "DỪNG" : "GHI HÌNH")
-                            .font(.system(size: 10, weight: .black))
-                            .foregroundColor(.white)
+                    Button(action: handleMainRecordButton) {
+                        ZStack {
+                            LinearGradient(
+                                colors: [Color(red: 1.0, green: 0.25, blue: 0.25), Color(red: 0.8, green: 0.0, blue: 0.1)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                            .frame(width: 84, height: 84)
+                            .clipShape(Circle())
+                            .shadow(color: .red.opacity(0.5), radius: 15, x: 0, y: 5)
+                            
+                            VStack(spacing: 4) {
+                                Image(systemName: replayKit.isRecording ? "stop.fill" : "record.circle")
+                                    .font(.system(size: 28, weight: .bold))
+                                    .foregroundColor(.white)
+                                Text(replayKit.isRecording ? "DỪNG" : "GHI HÌNH")
+                                    .font(.system(size: 10, weight: .black))
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }
-                    
-                    // Native RPSystemBroadcastPickerView Overlay
-                    // Khi người dùng bấm vào khu vực nút này, ReplayKit popup của iOS sẽ hiện ra!
-                    BroadcastPickerRepresentable()
-                        .frame(width: 84, height: 84)
-                        .opacity(0.015)
                 }
                 .padding(.vertical, 8)
                 
-                Text("Chạm để kích hoạt ghi toàn bộ màn hình iOS")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.white.opacity(0.6))
+                // System Broadcast Overlay Option
+                HStack(spacing: 8) {
+                    Image(systemName: "rectangle.inset.filled.and.person.filled")
+                        .foregroundColor(.orange)
+                        .font(.system(size: 14))
+                    Text("Quay toàn hệ thống (Game/App khác):")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.7))
+                    
+                    // Native Broadcast Picker View button
+                    BroadcastPickerRepresentable()
+                        .frame(width: 32, height: 32)
+                }
+                .padding(8)
+                .background(Color.white.opacity(0.06))
+                .cornerRadius(10)
                 
                 Divider().background(Color.white.opacity(0.1))
                 
@@ -285,6 +289,26 @@ public struct HomeView: View {
         }
     }
     
+    private func handleMainRecordButton() {
+        if replayKit.isRecording {
+            // Dừng quay trực tiếp
+            replayKit.stopDirectRecording { url in
+                if url != nil {
+                    alertMessage = "Ghi màn hình hoàn tất! Video đã được lưu vào Thư viện LAICHYM."
+                    showAlert = true
+                }
+            }
+        } else {
+            // Bắt đầu quay màn hình trực tiếp
+            replayKit.startDirectRecording(withMic: userSettings.streamSettings.enableMicrophone) { success, error in
+                if !success, let error = error {
+                    alertMessage = error
+                    showAlert = true
+                }
+            }
+        }
+    }
+    
     private func toggleButton(icon: String, title: String, isActive: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(spacing: 6) {
@@ -307,7 +331,6 @@ public struct HomeView: View {
     // MARK: - Feature Tools Grid
     private var featureToolsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
-            // Livestream
             toolCard(
                 title: "Phát trực tiếp",
                 subtitle: "YouTube, Facebook, Twitch",
@@ -317,7 +340,6 @@ public struct HomeView: View {
                 showLivestreamSheet = true
             }
             
-            // Reaction Studio
             toolCard(
                 title: "Reaction Studio",
                 subtitle: "Lồng webcam & bình luận",
@@ -327,7 +349,6 @@ public struct HomeView: View {
                 showReactionSheet = true
             }
             
-            // Video Editor
             toolCard(
                 title: "Chỉnh sửa Video",
                 subtitle: "Cắt, crop, lồng tiếng",
@@ -337,7 +358,6 @@ public struct HomeView: View {
                 showEditorSheet = true
             }
             
-            // Control Center Guide
             toolCard(
                 title: "Hướng dẫn cài đặt",
                 subtitle: "Bật Trung tâm điều khiển",

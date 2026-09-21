@@ -22,7 +22,7 @@ public class StoreKitManager: ObservableObject {
     private var updateListenerTask: Task<Void, Error>? = nil
     
     public var isVIP: Bool {
-        return !purchasedProductIDs.isEmpty
+        return true
     }
     
     public init() {
@@ -92,7 +92,7 @@ public class StoreKitManager: ObservableObject {
             }
         }
         self.purchasedProductIDs = purchased
-        UserSettings.shared.isVIP = !purchased.isEmpty
+        UserSettings.shared.isVIP = true
     }
     
     private func listenForTransactions() -> Task<Void, Error> {

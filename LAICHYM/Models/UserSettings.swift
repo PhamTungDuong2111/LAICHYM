@@ -1,14 +1,15 @@
 import Foundation
 import Combine
 
-// MARK: - App & User Preferences
+// MARK: - App & User Preferences (100% Free Forever)
 public class UserSettings: ObservableObject {
     public static let shared = UserSettings()
     
     public static let appGroupId = "group.com.laichym.app"
     private let defaults: UserDefaults
     
-    @Published public var isVIP: Bool {
+    // Luôn mở khóa toàn bộ tính năng cao cấp miễn phí
+    @Published public var isVIP: Bool = true {
         didSet { defaults.set(isVIP, forKey: "isVIP") }
     }
     
@@ -39,14 +40,15 @@ public class UserSettings: ObservableObject {
     public init() {
         self.defaults = UserDefaults(suiteName: UserSettings.appGroupId) ?? UserDefaults.standard
         
-        self.isVIP = defaults.bool(forKey: "isVIP")
-        self.showWatermark = defaults.object(forKey: "showWatermark") != nil ? defaults.bool(forKey: "showWatermark") : true
+        // Mặc định VIP vĩnh viễn và tắt logo bản quyền
+        self.isVIP = true
+        self.showWatermark = defaults.object(forKey: "showWatermark") != nil ? defaults.bool(forKey: "showWatermark") : false
         
         if let data = defaults.data(forKey: "streamSettings"),
            let decoded = try? JSONDecoder().decode(StreamSettings.self, from: data) {
             self.streamSettings = decoded
         } else {
-            self.streamSettings = StreamSettings()
+            self.streamSettings = StreamSettings(resolution: .fullHD1080, fps: .fps60)
         }
         
         if let data = defaults.data(forKey: "lastStreamDestination"),

@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-// MARK: - Quality & Stream Settings
+// MARK: - Quality & Stream Settings (All 100% Free)
 public enum VideoResolution: String, CaseIterable, Identifiable, Codable {
     case fullHD1080 = "1080p (Full HD)"
     case hd720 = "720p (HD)"
@@ -28,8 +28,9 @@ public enum VideoResolution: String, CaseIterable, Identifiable, Codable {
         }
     }
     
+    // Miễn phí 100% không yêu cầu trả phí
     public var requiresVIP: Bool {
-        return self == .fullHD1080
+        return false
     }
 }
 
@@ -44,8 +45,9 @@ public enum VideoFPS: Int, CaseIterable, Identifiable, Codable {
         return "\(rawValue) FPS"
     }
     
+    // Miễn phí 100%
     public var requiresVIP: Bool {
-        return self == .fps60
+        return false
     }
 }
 
@@ -73,9 +75,9 @@ public struct StreamSettings: Codable, Equatable {
     public var saveStreamToGallery: Bool
     
     public init(
-        resolution: VideoResolution = .hd720,
-        fps: VideoFPS = .fps30,
-        bitrateKbps: Int = 3000,
+        resolution: VideoResolution = .fullHD1080,
+        fps: VideoFPS = .fps60,
+        bitrateKbps: Int = 4500,
         enableMicrophone: Bool = true,
         enableSystemAudio: Bool = true,
         countdown: CountdownTimer = .sec3,

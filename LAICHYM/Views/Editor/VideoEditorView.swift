@@ -267,20 +267,17 @@ public struct VideoEditorView: View {
             Toggle(isOn: $editConfig.showWatermark) {
                 HStack {
                     Image(systemName: "tag.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundColor(.green)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Logo bản quyền LAICHYM")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                        if !userSettings.isVIP {
-                            Text("Nâng cấp VIP để xóa logo vĩnh viễn")
-                                .font(.system(size: 11))
-                                .foregroundColor(.yellow.opacity(0.8))
-                        }
+                        Text("Tùy chọn Bật/Tắt logo hoàn toàn miễn phí")
+                            .font(.system(size: 11))
+                            .foregroundColor(.white.opacity(0.6))
                     }
                 }
             }
-            .disabled(!userSettings.isVIP)
         }
     }
     
@@ -329,7 +326,7 @@ public struct VideoEditorView: View {
             startTime: 0.0,
             endTime: item.duration,
             totalDuration: item.duration,
-            showWatermark: !userSettings.isVIP
+            showWatermark: userSettings.showWatermark
         )
         let url = StorageManager.shared.fileUrl(for: item)
         self.player = AVPlayer(url: url)
