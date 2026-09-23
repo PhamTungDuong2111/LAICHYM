@@ -790,15 +790,15 @@
     el.vipPromoBanner.style.display = 'none';
     el.userTierLabel.textContent = 'PRO VIP (Đã kích hoạt)';
     el.heroQualityLabel.textContent = '1080p 60 FPS (PRO)';
-    log('[StoreKit 2] Giao dịch Apple In-App Purchase hoàn tất. Mở khóa toàn bộ VIP.', 'success');
-    alert('👑 Chúc mừng! Bạn đã kích hoạt thành công gói LAICHYM PRO VIP (3 ngày dùng thử miễn phí).');
+    log('[StoreKit 2] Giao dịch Apple In-App Purchase hoàn tất. Mở khóa toàn bộ tính năng.', 'success');
+    alert('👑 Chúc mừng! Bạn đã kích hoạt gói LAICHYM PRO Bản quyền Vĩnh viễn (Hoàn toàn Miễn phí 100%).');
   });
 
   el.btnRestorePurchase?.addEventListener('click', () => {
     state.isVIP = true;
     el.modalPaywall.style.display = 'none';
-    log('[StoreKit 2] Khôi phục giao dịch thành công.', 'success');
-    alert('Đã khôi phục giao dịch VIP của bạn!');
+    log('[StoreKit 2] Khôi phục quyền lợi thành công.', 'success');
+    alert('Đã đồng bộ gói bản quyền Vĩnh viễn Miễn phí của bạn!');
   });
 
   el.btnClosePaywall?.addEventListener('click', () => el.modalPaywall.style.display = 'none');
