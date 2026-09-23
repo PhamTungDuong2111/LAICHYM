@@ -1,11 +1,12 @@
 import SwiftUI
 import AVFoundation
 
-// MARK: - Reaction Studio View
+// MARK: - Reaction Studio View with Bilingual Support
 public struct ReactionStudioView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var storage = StorageManager.shared
     @ObservedObject var faceCam = FaceCamService.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     @State private var selectedVideo: RecordingItem? = nil
     @State private var isReactionRecording = false
@@ -37,11 +38,11 @@ public struct ReactionStudioView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
             }
-            .navigationTitle("Reaction Studio")
+            .navigationTitle(lang.s("reaction_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Xong") {
+                    Button(lang.s("done")) {
                         stopReaction()
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -66,18 +67,18 @@ public struct ReactionStudioView: View {
                 .foregroundColor(.pink)
                 .padding(.top, 40)
             
-            Text("Chọn video để thực hiện Reaction")
+            Text(lang.s("reaction_select_prompt"))
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.white)
             
-            Text("Lồng camera khuôn mặt và ghi âm lời bình luận trực tiếp trong khi video đang phát")
+            Text(lang.s("reaction_select_hint"))
                 .font(.system(size: 13))
                 .foregroundColor(.white.opacity(0.6))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
             
             if storage.recordings.isEmpty {
-                Text("Bạn chưa có video nào trong thư viện.")
+                Text(lang.s("reaction_empty_library"))
                     .font(.system(size: 12))
                     .foregroundColor(.orange)
             } else {
@@ -163,7 +164,7 @@ public struct ReactionStudioView: View {
                         .fill(isReactionRecording ? Color.red : Color.pink)
                         .frame(width: 14, height: 14)
                     
-                    Text(isReactionRecording ? "DỪNG QUAY REACTION (\(Int(reactionDuration))s)" : "BẮT ĐẦU REACTION")
+                    Text(isReactionRecording ? "\(lang.s("reaction_stop")) (\(Int(reactionDuration))s)" : lang.s("reaction_start"))
                         .font(.system(size: 15, weight: .bold))
                 }
                 .foregroundColor(.white)

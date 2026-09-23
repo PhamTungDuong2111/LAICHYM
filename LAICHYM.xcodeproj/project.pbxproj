@@ -33,6 +33,7 @@
 		A10000010000000000000024 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000024 /* SampleHandler.swift */; };
 		A10000010000000000000025 /* LAICHYMBroadcast.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A10000020000000000000030 /* LAICHYMBroadcast.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A10000010000000000000031 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000031 /* Assets.xcassets */; };
+		A10000010000000000000032 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000032 /* LanguageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		A10000020000000000000029 /* LAICHYM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LAICHYM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000020000000000000030 /* LAICHYMBroadcast.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LAICHYMBroadcast.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000020000000000000031 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000020000000000000032 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				A10000020000000000000011 /* VideoEditorService.swift */,
 				A10000020000000000000012 /* RTMPStreamer.swift */,
 				A10000020000000000000013 /* StoreKitManager.swift */,
+				A10000020000000000000032 /* LanguageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				A10000010000000000000021 /* BroadcastPickerRepresentable.swift in Sources */,
 				A10000010000000000000022 /* CameraPreviewRepresentable.swift in Sources */,
 				A10000010000000000000023 /* VideoPlayerRepresentable.swift in Sources */,
+				A10000010000000000000032 /* LanguageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

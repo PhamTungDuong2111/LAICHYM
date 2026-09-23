@@ -1,9 +1,10 @@
 import SwiftUI
 
-// MARK: - Main Tab ContentView
+// MARK: - Main Tab ContentView with Bilingual Support
 public struct ContentView: View {
     @State private var selectedTab: Int = 0
     @ObservedObject var faceCam = FaceCamService.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     public init() {}
     
@@ -37,13 +38,13 @@ public struct ContentView: View {
     // MARK: - Custom Tab Bar
     private var customTabBar: some View {
         HStack {
-            tabItem(index: 0, icon: "record.circle", selectedIcon: "record.circle.fill", title: "Trang chủ")
+            tabItem(index: 0, icon: "record.circle", selectedIcon: "record.circle.fill", title: lang.s("tab_home"))
             Spacer()
-            tabItem(index: 1, icon: "antenna.radiowaves.left.and.right", selectedIcon: "antenna.radiowaves.left.and.right", title: "Trực tiếp")
+            tabItem(index: 1, icon: "antenna.radiowaves.left.and.right", selectedIcon: "antenna.radiowaves.left.and.right", title: lang.s("tab_live"))
             Spacer()
-            tabItem(index: 2, icon: "folder", selectedIcon: "folder.fill", title: "Thư viện")
+            tabItem(index: 2, icon: "folder", selectedIcon: "folder.fill", title: lang.s("tab_library"))
             Spacer()
-            tabItem(index: 3, icon: "gearshape", selectedIcon: "gearshape.fill", title: "Cài đặt")
+            tabItem(index: 3, icon: "gearshape", selectedIcon: "gearshape.fill", title: lang.s("tab_settings"))
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)

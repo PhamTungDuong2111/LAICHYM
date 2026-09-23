@@ -1,12 +1,13 @@
 import SwiftUI
 import AVFoundation
 
-// MARK: - Video Editor View (Trim, Crop, Voiceover, Watermark)
+// MARK: - Video Editor View (Trim, Crop, Voiceover, Watermark with Bilingual Support)
 public struct VideoEditorView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var storage = StorageManager.shared
     @ObservedObject var editor = VideoEditorService.shared
     @ObservedObject var userSettings = UserSettings.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     @State private var selectedItem: RecordingItem? = nil
     @State private var editConfig = VideoEditConfig()
@@ -57,11 +58,11 @@ public struct VideoEditorView: View {
                     exportProgressOverlay
                 }
             }
-            .navigationTitle("Chỉnh sửa Video")
+            .navigationTitle(lang.s("editor_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng") {
+                    Button(lang.s("close")) {
                         player?.pause()
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -70,9 +71,9 @@ public struct VideoEditorView: View {
             }
             .alert(isPresented: $showExportSuccessAlert) {
                 Alert(
-                    title: Text("Xuất video thành công!"),
-                    message: Text("Video đã chỉnh sửa được lưu vào Thư viện video LAICHYM của bạn."),
-                    dismissButton: .default(Text("Tuyệt vời"), action: {
+                    title: Text(lang.s("editor_export_success_title")),
+                    message: Text(lang.s("editor_export_success_msg")),
+                    dismissButton: .default(Text(lang.s("great")), action: {
                         presentationMode.wrappedValue.dismiss()
                     })
                 )
@@ -88,12 +89,12 @@ public struct VideoEditorView: View {
                 .foregroundColor(.green)
                 .padding(.top, 40)
             
-            Text("Chọn video cần chỉnh sửa")
+            Text(lang.s("editor_select_prompt"))
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.white)
             
             if storage.recordings.isEmpty {
-                Text("Chưa có video nào để chỉnh sửa.")
+                Text(lang.s("reaction_empty_library"))
                     .font(.system(size: 13))
                     .foregroundColor(.white.opacity(0.5))
             } else {
@@ -153,7 +154,7 @@ public struct VideoEditorView: View {
                 HStack {
                     Image(systemName: "timeline.selection")
                         .foregroundColor(.green)
-                    Text("Cắt thời lượng (Trim)")
+                    Text(lang.s("editor_trim_title"))
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                     Spacer()
@@ -164,7 +165,7 @@ public struct VideoEditorView: View {
                 
                 VStack(spacing: 8) {
                     HStack {
-                        Text("Bắt đầu:")
+                        Text(lang.s("editor_start"))
                             .font(.system(size: 12))
                             .foregroundColor(.white.opacity(0.6))
                         Slider(value: $editConfig.startTime, in: 0...max(0.1, editConfig.endTime - 0.5))
@@ -172,7 +173,7 @@ public struct VideoEditorView: View {
                     }
                     
                     HStack {
-                        Text("Kết thúc:")
+                        Text(lang.s("editor_end"))
                             .font(.system(size: 12))
                             .foregroundColor(.white.opacity(0.6))
                         Slider(value: $editConfig.endTime, in: min(editConfig.totalDuration, editConfig.startTime + 0.5)...editConfig.totalDuration)
@@ -190,7 +191,7 @@ public struct VideoEditorView: View {
                 HStack {
                     Image(systemName: "crop")
                         .foregroundColor(.green)
-                    Text("Tỉ lệ khung hình (Crop)")
+                    Text(lang.s("editor_crop_title"))
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                 }
@@ -223,7 +224,7 @@ public struct VideoEditorView: View {
                 HStack {
                     Image(systemName: "slider.vertical.3")
                         .foregroundColor(.green)
-                    Text("Bộ trộn âm thanh (Audio Mixer)")
+                    Text(lang.s("editor_mixer_title"))
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                 }
@@ -231,7 +232,7 @@ public struct VideoEditorView: View {
                 // Original Track Volume
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text("Âm thanh gốc:")
+                        Text(lang.s("editor_original_audio"))
                             .font(.system(size: 12))
                             .foregroundColor(.white.opacity(0.6))
                         Spacer()
@@ -246,7 +247,7 @@ public struct VideoEditorView: View {
                 // Voiceover Commentary Volume
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text("Âm thanh lồng tiếng:")
+                        Text(lang.s("editor_voiceover_audio"))
                             .font(.system(size: 12))
                             .foregroundColor(.white.opacity(0.6))
                         Spacer()
@@ -269,10 +270,10 @@ public struct VideoEditorView: View {
                     Image(systemName: "tag.fill")
                         .foregroundColor(.green)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Logo bản quyền LAICHYM")
+                        Text(lang.s("editor_watermark_title"))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                        Text("Tùy chọn Bật/Tắt logo hoàn toàn miễn phí")
+                        Text(lang.s("editor_watermark_sub"))
                             .font(.system(size: 11))
                             .foregroundColor(.white.opacity(0.6))
                     }
@@ -286,7 +287,7 @@ public struct VideoEditorView: View {
         Button(action: executeExport) {
             HStack(spacing: 8) {
                 Image(systemName: "arrow.down.doc.fill")
-                Text("XUẤT VIDEO (MP4)")
+                Text(lang.s("editor_export_btn"))
             }
             .font(.system(size: 15, weight: .bold))
             .foregroundColor(.white)
@@ -310,7 +311,7 @@ public struct VideoEditorView: View {
                     .progressViewStyle(LinearProgressViewStyle(tint: .green))
                     .frame(width: 200)
                 
-                Text("Đang xuất video: \(Int(editor.exportProgress * 100))%")
+                Text("\(lang.s("editor_exporting")) \(Int(editor.exportProgress * 100))%")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.white)
             }

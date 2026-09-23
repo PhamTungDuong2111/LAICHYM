@@ -1,12 +1,13 @@
 import SwiftUI
 import AVFoundation
 
-// MARK: - Livestream Setup & Broadcast View (100% Free)
+// MARK: - Livestream Setup & Broadcast View (100% Free with Bilingual Support)
 public struct LivestreamView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var userSettings = UserSettings.shared
     @ObservedObject var rtmpStreamer = RTMPStreamer.shared
     @ObservedObject var replayKit = ReplayKitManager.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     @State private var selectedPlatform: LivePlatform = .youtube
     @State private var serverUrl: String = ""
@@ -59,11 +60,11 @@ public struct LivestreamView: View {
                     .padding(.top, 10)
                 }
             }
-            .navigationTitle("Phát trực tiếp (100% Free)")
+            .navigationTitle(lang.s("live_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng") {
+                    Button(lang.s("close")) {
                         presentationMode.wrappedValue.dismiss()
                     }
                     .foregroundColor(.white)
@@ -82,9 +83,9 @@ public struct LivestreamView: View {
     
     // MARK: - Stream Source Mode Switcher
     private var streamSourcePicker: some View {
-        Picker("Nguồn phát", selection: $streamMode) {
+        Picker("", selection: $streamMode) {
             ForEach(StreamSourceMode.allCases) { mode in
-                Text(mode.rawValue).tag(mode)
+                Text(mode == .camera ? lang.s("live_source_camera") : lang.s("live_source_screen")).tag(mode)
             }
         }
         .pickerStyle(SegmentedPickerStyle())
@@ -109,7 +110,7 @@ public struct LivestreamView: View {
             
             VStack {
                 HStack {
-                    Label("Xem trước Camera", systemImage: "video.fill")
+                    Label(lang.s("live_camera_preview"), systemImage: "video.fill")
                         .font(.system(size: 11, weight: .bold))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
@@ -170,7 +171,7 @@ public struct LivestreamView: View {
                     .font(.system(size: 18))
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Hướng dẫn lấy Khóa luồng")
+                    Text(lang.s("live_stream_key_help"))
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(.white)
                     Text(selectedPlatform.instructions)
@@ -186,13 +187,13 @@ public struct LivestreamView: View {
     private var credentialsCard: some View {
         GlassCard(cornerRadius: 18) {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Thông tin máy chủ RTMP")
+                Text(lang.s("live_server_info"))
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                 
                 // Server URL
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("URL máy chủ (Server URL)")
+                    Text(lang.s("live_server_url"))
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.white.opacity(0.6))
                     
@@ -218,7 +219,7 @@ public struct LivestreamView: View {
                 // Stream Key
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text("Khóa luồng (Stream Key)")
+                        Text(lang.s("live_stream_key"))
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.white.opacity(0.6))
                         Spacer()
@@ -227,7 +228,7 @@ public struct LivestreamView: View {
                                 streamKey = paste
                             }
                         }) {
-                            Text("Dán từ bộ nhớ tạm")
+                            Text(lang.s("live_paste_clipboard"))
                                 .font(.system(size: 11, weight: .bold))
                                 .foregroundColor(.red)
                         }
@@ -235,12 +236,12 @@ public struct LivestreamView: View {
                     
                     HStack {
                         if isSecureKeyVisible {
-                            TextField("Nhập Stream Key", text: $streamKey)
+                            TextField(lang.s("live_enter_stream_key"), text: $streamKey)
                                 .foregroundColor(.white)
                                 .font(.system(size: 13))
                                 .autocapitalization(.none)
                         } else {
-                            SecureField("Nhập Stream Key", text: $streamKey)
+                            SecureField(lang.s("live_enter_stream_key"), text: $streamKey)
                                 .foregroundColor(.white)
                                 .font(.system(size: 13))
                         }
@@ -260,10 +261,10 @@ public struct LivestreamView: View {
                     HStack {
                         if isTestingConnection {
                             ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            Text("Đang kiểm tra kết nối...")
+                            Text(lang.s("live_testing"))
                         } else {
                             Image(systemName: "bolt.horizontal.fill")
-                            Text("Kiểm tra kết nối RTMP")
+                            Text(lang.s("live_test_connection"))
                         }
                     }
                     .font(.system(size: 13, weight: .semibold))
@@ -295,17 +296,17 @@ public struct LivestreamView: View {
     private var qualitySettingsCard: some View {
         GlassCard(cornerRadius: 18) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Cấu hình chất lượng phát")
+                Text(lang.s("live_quality_settings"))
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                 
                 // Resolution Selector
                 HStack {
-                    Text("Độ phân giải")
+                    Text(lang.s("live_resolution"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                     Spacer()
-                    Picker("Độ phân giải", selection: $userSettings.streamSettings.resolution) {
+                    Picker("", selection: $userSettings.streamSettings.resolution) {
                         ForEach(VideoResolution.allCases) { res in
                             Text(res.rawValue).tag(res)
                         }
@@ -318,11 +319,11 @@ public struct LivestreamView: View {
                 
                 // Frame Rate (FPS)
                 HStack {
-                    Text("Tốc độ khung hình (FPS)")
+                    Text(lang.s("live_fps"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                     Spacer()
-                    Picker("FPS", selection: $userSettings.streamSettings.fps) {
+                    Picker("", selection: $userSettings.streamSettings.fps) {
                         ForEach(VideoFPS.allCases) { fps in
                             Text(fps.title).tag(fps)
                         }
@@ -336,7 +337,7 @@ public struct LivestreamView: View {
                 // Bitrate
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text("Bitrate truyền tải")
+                        Text(lang.s("live_bitrate"))
                             .font(.system(size: 13))
                             .foregroundColor(.white.opacity(0.7))
                         Spacer()
@@ -367,7 +368,7 @@ public struct LivestreamView: View {
                     HStack(spacing: 8) {
                         Image(systemName: rtmpStreamer.state == .streaming ? "stop.fill" : "antenna.radiowaves.left.and.right")
                             .font(.system(size: 18, weight: .bold))
-                        Text(rtmpStreamer.state == .streaming ? "DỪNG PHÁT TRỰC TIẾP" : "BẮT ĐẦU PHÁT TRỰC TIẾP")
+                        Text(rtmpStreamer.state == .streaming ? lang.s("live_stop_btn") : lang.s("live_start_btn"))
                             .font(.system(size: 15, weight: .bold))
                     }
                     .foregroundColor(.white)
@@ -387,10 +388,10 @@ public struct LivestreamView: View {
                 // Screen Stream via ReplayKit Broadcast Picker
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Phát màn hình toàn hệ thống:")
+                        Text(lang.s("live_screen_broadcast_title"))
                             .font(.system(size: 13, weight: .bold))
                             .foregroundColor(.white)
-                        Text("Bấm vào nút bên cạnh để bắt đầu phát sóng màn hình qua ReplayKit")
+                        Text(lang.s("live_screen_broadcast_hint"))
                             .font(.system(size: 11))
                             .foregroundColor(.white.opacity(0.6))
                     }
@@ -411,7 +412,7 @@ public struct LivestreamView: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Circle().fill(Color.red).frame(width: 10, height: 10)
-                    Text("ĐANG PHÁT TRỰC TIẾP")
+                    Text(lang.s("live_status_active"))
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(.red)
                     Spacer()

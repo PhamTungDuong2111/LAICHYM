@@ -123,6 +123,9 @@
                 </div>
 
                 <div class="header-actions">
+                  <button class="lang-pill-btn" id="btnHeaderLangToggle" title="Chuyển ngôn ngữ / Switch Language">
+                    <span id="headerLangFlag">🇻🇳</span> <span id="headerLangText">VI</span>
+                  </button>
                   <button class="vip-pill-btn" id="openPaywallFromHeader" style="background: rgba(52, 199, 89, 0.2); border-color: rgba(52, 199, 89, 0.5); color: #34c759;">
                     <span class="crown-icon">✓</span> MIỄN PHÍ
                   </button>
@@ -375,8 +378,19 @@
             <!-- TAB 4: CÀI ĐẶT (SETTINGS) -->
             <section class="app-page" id="pageSettings">
               <header class="page-title-bar">
-                <h2>Cài Đặt & Hướng Dẫn</h2>
+                <h2 id="settingsPageHeading">Cài Đặt & Hướng Dẫn</h2>
               </header>
+
+              <!-- Language Selector Card -->
+              <div class="glass-card guide-card">
+                <div class="guide-title">
+                  <span>🌐</span> <span id="labelLangTitle">Ngôn ngữ hiển thị (Display Language)</span>
+                </div>
+                <div class="lang-selector-buttons">
+                  <button class="lang-btn active" id="btnLangVI" data-lang="vi">🇻🇳 Tiếng Việt</button>
+                  <button class="lang-btn" id="btnLangEN" data-lang="en">🇺🇸 English</button>
+                </div>
+              </div>
 
               <!-- Control Center Guide -->
               <div class="glass-card guide-card">
@@ -474,6 +488,14 @@
         <p class="panel-desc">Trình giả lập này liên kết trực tiếp với phần cứng máy tính của bạn:</p>
 
         <div class="action-buttons-stack">
+          <button class="action-btn" id="triggerLangSwitch">
+            <span class="btn-icon">🌐</span>
+            <div>
+              <strong id="btnSidebarLangTitle">Đổi Ngôn Ngữ / Switch Language</strong>
+              <small id="sidebarLangStatus">Đang dùng: 🇻🇳 Tiếng Việt (Bấm để đổi English)</small>
+            </div>
+          </button>
+
           <button class="action-btn" id="triggerWebScreenShare">
             <span class="btn-icon">🖥️</span>
             <div>

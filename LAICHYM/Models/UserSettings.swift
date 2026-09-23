@@ -37,8 +37,15 @@ public class UserSettings: ObservableObject {
         didSet { defaults.set(defaultFaceCamShape.rawValue, forKey: "defaultFaceCamShape") }
     }
     
+    @Published public var language: AppLanguage {
+        didSet {
+            LanguageManager.shared.currentLanguage = language
+        }
+    }
+    
     public init() {
         self.defaults = UserDefaults(suiteName: UserSettings.appGroupId) ?? UserDefaults.standard
+        self.language = LanguageManager.shared.currentLanguage
         
         // Mặc định VIP vĩnh viễn và tắt logo bản quyền
         self.isVIP = true

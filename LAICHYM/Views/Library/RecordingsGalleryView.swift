@@ -1,9 +1,10 @@
 import SwiftUI
 import AVKit
 
-// MARK: - Recordings Gallery View
+// MARK: - Recordings Gallery View with Bilingual Support
 public struct RecordingsGalleryView: View {
     @ObservedObject var storage = StorageManager.shared
+    @ObservedObject var lang = LanguageManager.shared
     @State private var selectedItem: RecordingItem? = nil
     @State private var searchText: String = ""
     @State private var isGridView: Bool = true
@@ -40,7 +41,7 @@ public struct RecordingsGalleryView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
             }
-            .navigationTitle("Thư viện video")
+            .navigationTitle(lang.s("lib_title"))
             .sheet(item: $selectedItem) { item in
                 VideoDetailSheet(item: item)
             }
@@ -56,7 +57,7 @@ public struct RecordingsGalleryView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.white.opacity(0.4))
-                TextField("Tìm kiếm video...", text: $searchText)
+                TextField(lang.s("lib_search_placeholder"), text: $searchText)
                     .foregroundColor(.white)
                     .font(.system(size: 14))
             }
@@ -82,10 +83,10 @@ public struct RecordingsGalleryView: View {
             Image(systemName: "film")
                 .font(.system(size: 50))
                 .foregroundColor(.white.opacity(0.2))
-            Text("Không có video nào")
+            Text(lang.s("lib_empty_title"))
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.white.opacity(0.7))
-            Text("Các video quay màn hình hoặc livestream sẽ xuất hiện tại đây")
+            Text(lang.s("lib_empty_desc"))
                 .font(.system(size: 12))
                 .foregroundColor(.white.opacity(0.4))
                 .multilineTextAlignment(.center)
@@ -147,11 +148,12 @@ public struct RecordingsGalleryView: View {
     }
 }
 
-// MARK: - Video Detail & Actions Sheet
+// MARK: - Video Detail & Actions Sheet with Bilingual Support
 public struct VideoDetailSheet: View {
     let item: RecordingItem
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var storage = StorageManager.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     @State private var player: AVPlayer? = nil
     @State private var showRenameDialog = false
@@ -195,7 +197,7 @@ public struct VideoDetailSheet: View {
                         Button(action: saveToPhotos) {
                             HStack {
                                 Image(systemName: "square.and.arrow.down.fill")
-                                Text("Lưu vào Ảnh (Camera Roll)")
+                                Text(lang.s("lib_save_photos"))
                             }
                             .font(.system(size: 14, weight: .bold))
                             .foregroundColor(.white)
@@ -210,7 +212,7 @@ public struct VideoDetailSheet: View {
                             Button(action: { isSharing = true }) {
                                 HStack {
                                     Image(systemName: "square.and.arrow.up")
-                                    Text("Chia sẻ")
+                                    Text(lang.s("share"))
                                 }
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(.white)
@@ -227,7 +229,7 @@ public struct VideoDetailSheet: View {
                             }) {
                                 HStack {
                                     Image(systemName: "pencil")
-                                    Text("Đổi tên")
+                                    Text(lang.s("rename"))
                                 }
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(.white)
@@ -241,7 +243,7 @@ public struct VideoDetailSheet: View {
                             Button(action: deleteVideo) {
                                 HStack {
                                     Image(systemName: "trash.fill")
-                                    Text("Xóa")
+                                    Text(lang.s("delete"))
                                 }
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(.red)
@@ -258,11 +260,11 @@ public struct VideoDetailSheet: View {
                 }
                 .padding(.top, 10)
             }
-            .navigationTitle("Chi tiết video")
+            .navigationTitle(lang.s("lib_detail_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Đóng") {
+                    Button(lang.s("close")) {
                         player?.pause()
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -274,7 +276,11 @@ public struct VideoDetailSheet: View {
                 self.player = AVPlayer(url: url)
             }
             .alert(isPresented: $showSaveSuccessAlert) {
-                Alert(title: Text("Thành công"), message: Text("Video đã được lưu vào Album Ảnh"), dismissButton: .default(Text("OK")))
+                Alert(
+                    title: Text(lang.s("success")),
+                    message: Text(lang.s("lib_save_success")),
+                    dismissButton: .default(Text(lang.s("ok")))
+                )
             }
             .sheet(isPresented: $isSharing) {
                 let url = storage.fileUrl(for: item)

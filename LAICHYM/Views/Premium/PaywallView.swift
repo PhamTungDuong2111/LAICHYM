@@ -1,9 +1,10 @@
 import SwiftUI
 
-// MARK: - About & Features Showcase (100% Free Forever - No Paywall)
+// MARK: - About & Features Showcase (100% Free Forever with Bilingual Support)
 public struct PaywallView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var userSettings = UserSettings.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     public init() {}
     
@@ -43,11 +44,11 @@ public struct PaywallView: View {
                                 .foregroundColor(.white)
                         }
                         
-                        Text("LAICHYM PRO")
+                        Text(lang.s("pw_title"))
                             .font(.system(size: 24, weight: .black, design: .rounded))
                             .foregroundColor(.white)
                         
-                        Text("Ứng dụng mở khóa toàn bộ tính năng hoàn toàn MIỄN PHÍ")
+                        Text(lang.s("pw_subtitle"))
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(.green)
                             .multilineTextAlignment(.center)
@@ -72,10 +73,10 @@ public struct PaywallView: View {
     // MARK: - Features List
     private var featuresList: some View {
         VStack(spacing: 12) {
-            featureRow(icon: "sparkles.tv.fill", title: "Quay & Stream 1080p 60 FPS Full HD", subtitle: "Chất lượng cao nhất hoàn toàn miễn phí")
-            featureRow(icon: "tag.slash.fill", title: "Tùy chọn Bật/Tắt Logo bản quyền", subtitle: "Xuất video sạch sẽ không bị gắn watermark bắt buộc")
-            featureRow(icon: "antenna.radiowaves.left.and.right", title: "Livestream YouTube, Facebook, Twitch", subtitle: "Phát sóng trực tiếp camera & màn hình không giới hạn")
-            featureRow(icon: "scissors", title: "Bộ công cụ Video Editor đầy đủ", subtitle: "Cắt ngắn, crop tỉ lệ 9:16 TikTok, lồng tiếng micro")
+            featureRow(icon: "sparkles.tv.fill", title: lang.s("pw_feat1_title"), subtitle: lang.s("pw_feat1_sub"))
+            featureRow(icon: "tag.slash.fill", title: lang.s("pw_feat2_title"), subtitle: lang.s("pw_feat2_sub"))
+            featureRow(icon: "antenna.radiowaves.left.and.right", title: lang.s("pw_feat3_title"), subtitle: lang.s("pw_feat3_sub"))
+            featureRow(icon: "scissors", title: lang.s("pw_feat4_title"), subtitle: lang.s("pw_feat4_sub"))
         }
         .padding(.horizontal, 16)
     }
@@ -115,10 +116,10 @@ public struct PaywallView: View {
                     .font(.system(size: 24))
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Gói bản quyền Vĩnh viễn (Miễn phí)")
+                    Text(lang.s("pw_lifetime_badge"))
                         .font(.system(size: 14, weight: .bold))
                         .foregroundColor(.white)
-                    Text("Không thu bất kỳ khoản phí nào, không có quảng cáo phiền toái")
+                    Text(lang.s("pw_lifetime_desc"))
                         .font(.system(size: 11))
                         .foregroundColor(.white.opacity(0.6))
                 }
@@ -131,7 +132,7 @@ public struct PaywallView: View {
     // MARK: - CTA Use Now Button
     private var ctaUseNowButton: some View {
         Button(action: { presentationMode.wrappedValue.dismiss() }) {
-            Text("BẮT ĐẦU SỬ DỤNG NGAY")
+            Text(lang.s("pw_start_btn"))
                 .font(.system(size: 15, weight: .black))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)

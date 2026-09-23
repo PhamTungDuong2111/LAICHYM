@@ -1890,3 +1890,59 @@ body {
   color: var(--text-muted);
   cursor: pointer;
 }
+
+/* Language Selector Styles */
+.lang-selector-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.lang-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, #0a84ff, #0056b3);
+  border-color: #0a84ff;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(10, 132, 255, 0.35);
+}
+
+.lang-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: rgba(10, 132, 255, 0.18);
+  border: 1px solid rgba(10, 132, 255, 0.45);
+  color: #64d2ff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-pill-btn:hover {
+  background: rgba(10, 132, 255, 0.35);
+  transform: scale(1.05);
+}

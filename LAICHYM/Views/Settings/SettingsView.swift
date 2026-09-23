@@ -1,9 +1,10 @@
 import SwiftUI
 
-// MARK: - Settings & Control Center Guide View
+// MARK: - Settings, Language & Control Center Guide View
 public struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var userSettings = UserSettings.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     public init() {}
     
@@ -14,6 +15,9 @@ public struct SettingsView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 20) {
+                        // Language Selection Card
+                        languageSelectorCard
+                        
                         // Control Center Guide Card
                         controlCenterTutorialCard
                         
@@ -32,14 +36,67 @@ public struct SettingsView: View {
                     .padding(.top, 10)
                 }
             }
-            .navigationTitle("Cài đặt")
+            .navigationTitle(lang.s("settings_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Xong") {
+                    Button(lang.s("done")) {
                         presentationMode.wrappedValue.dismiss()
                     }
                     .foregroundColor(.white)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Language Selector Card
+    private var languageSelectorCard: some View {
+        GlassCard(cornerRadius: 18) {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 10) {
+                    Image(systemName: "globe")
+                        .foregroundColor(.blue)
+                        .font(.system(size: 20))
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(lang.s("settings_language"))
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.white)
+                        Text(lang.s("settings_language_desc"))
+                            .font(.system(size: 11))
+                            .foregroundColor(.white.opacity(0.6))
+                    }
+                }
+                
+                HStack(spacing: 12) {
+                    ForEach(AppLanguage.allCases) { item in
+                        let isSelected = lang.currentLanguage == item
+                        Button(action: {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                userSettings.language = item
+                            }
+                        }) {
+                            HStack(spacing: 8) {
+                                Text(item.flag)
+                                    .font(.system(size: 18))
+                                Text(item.title)
+                                    .font(.system(size: 13, weight: isSelected ? .bold : .medium))
+                            }
+                            .foregroundColor(isSelected ? .white : .white.opacity(0.6))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(
+                                isSelected ?
+                                LinearGradient(colors: [Color.blue, Color(red: 0.1, green: 0.4, blue: 0.9)], startPoint: .leading, endPoint: .trailing) :
+                                LinearGradient(colors: [Color.white.opacity(0.08), Color.white.opacity(0.08)], startPoint: .leading, endPoint: .trailing)
+                            )
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(isSelected ? Color.blue : Color.white.opacity(0.1), lineWidth: 1)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -53,16 +110,16 @@ public struct SettingsView: View {
                     Image(systemName: "hand.tap.fill")
                         .foregroundColor(.red)
                         .font(.system(size: 20))
-                    Text("Cách bật Ghi màn hình trên iOS")
+                    Text(lang.s("settings_control_center_title"))
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                 }
                 
                 VStack(alignment: .leading, spacing: 10) {
-                    tutorialStep(number: "1", text: "Mở Cài đặt (Settings) trên iPhone > chọn Trung tâm điều khiển (Control Center).")
-                    tutorialStep(number: "2", text: "Tìm mục 'Ghi màn hình' (Screen Recording) và bấm dấu (+) màu xanh để thêm vào.")
-                    tutorialStep(number: "3", text: "Vuốt từ góc trên bên phải màn hình xuống để mở Trung tâm điều khiển.")
-                    tutorialStep(number: "4", text: "Nhấn giữ (Long press) vào nút Ghi màn hình > chọn 'LAICHYM' > Bắt đầu truyền phát.")
+                    tutorialStep(number: "1", text: lang.s("settings_cc_step_1"))
+                    tutorialStep(number: "2", text: lang.s("settings_cc_step_2"))
+                    tutorialStep(number: "3", text: lang.s("settings_cc_step_3"))
+                    tutorialStep(number: "4", text: lang.s("settings_cc_step_4"))
                 }
             }
         }
@@ -87,13 +144,13 @@ public struct SettingsView: View {
     private var videoSettingsCard: some View {
         GlassCard(cornerRadius: 18) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Thông số video mặc định")
+                Text(lang.s("settings_default_video"))
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                 
                 // Resolution
                 HStack {
-                    Text("Độ phân giải")
+                    Text(lang.s("live_resolution"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                     Spacer()
@@ -110,7 +167,7 @@ public struct SettingsView: View {
                 
                 // FPS
                 HStack {
-                    Text("Số khung hình (FPS)")
+                    Text(lang.s("live_fps"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                     Spacer()
@@ -127,7 +184,7 @@ public struct SettingsView: View {
                 
                 // Countdown
                 HStack {
-                    Text("Đếm ngược trước khi quay")
+                    Text(lang.s("settings_countdown"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.7))
                     Spacer()
@@ -145,10 +202,10 @@ public struct SettingsView: View {
                 // Watermark
                 Toggle(isOn: $userSettings.showWatermark) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Chèn Watermark logo LAICHYM")
+                        Text(lang.s("settings_watermark"))
                             .font(.system(size: 13))
                             .foregroundColor(.white.opacity(0.8))
-                        Text("Mặc định Tắt (hoàn toàn miễn phí)")
+                        Text(lang.s("settings_watermark_sub"))
                             .font(.system(size: 11))
                             .foregroundColor(.white.opacity(0.4))
                     }
@@ -162,12 +219,12 @@ public struct SettingsView: View {
     private var audioSettingsCard: some View {
         GlassCard(cornerRadius: 18) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Cấu hình âm thanh")
+                Text(lang.s("settings_audio_title"))
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                 
                 Toggle(isOn: $userSettings.streamSettings.enableMicrophone) {
-                    Text("Bật micro ghi âm bình luận")
+                    Text(lang.s("settings_audio_mic"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -176,7 +233,7 @@ public struct SettingsView: View {
                 Divider().background(Color.white.opacity(0.1))
                 
                 Toggle(isOn: $userSettings.streamSettings.enableSystemAudio) {
-                    Text("Ghi âm thanh hệ thống (Game/App)")
+                    Text(lang.s("settings_audio_sys"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -189,12 +246,12 @@ public struct SettingsView: View {
     private var appInfoCard: some View {
         GlassCard(cornerRadius: 18) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("Thông tin ứng dụng")
+                Text(lang.s("settings_app_info"))
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                 
                 HStack {
-                    Text("Phiên bản")
+                    Text(lang.s("settings_version"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.6))
                     Spacer()
@@ -206,7 +263,7 @@ public struct SettingsView: View {
                 Divider().background(Color.white.opacity(0.1))
                 
                 HStack {
-                    Text("Chính sách bảo mật")
+                    Text(lang.s("settings_privacy"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.8))
                     Spacer()
@@ -218,7 +275,7 @@ public struct SettingsView: View {
                 Divider().background(Color.white.opacity(0.1))
                 
                 HStack {
-                    Text("Điều khoản dịch vụ")
+                    Text(lang.s("settings_terms"))
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.8))
                     Spacer()

@@ -1,11 +1,12 @@
 import SwiftUI
 
-// MARK: - Home Dashboard View (100% Free Forever)
+// MARK: - Home Dashboard View (100% Free Forever with Bilingual Support)
 public struct HomeView: View {
     @ObservedObject var replayKit = ReplayKitManager.shared
     @ObservedObject var storage = StorageManager.shared
     @ObservedObject var userSettings = UserSettings.shared
     @ObservedObject var faceCam = FaceCamService.shared
+    @ObservedObject var lang = LanguageManager.shared
     
     @State private var showLivestreamSheet = false
     @State private var showReactionSheet = false
@@ -70,7 +71,11 @@ public struct HomeView: View {
                 VideoDetailSheet(item: item)
             }
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Thông báo"), message: Text(alertMessage), dismissButton: .default(Text("Đã hiểu")))
+                Alert(
+                    title: Text(lang.s("notice")),
+                    message: Text(alertMessage),
+                    dismissButton: .default(Text(lang.s("understood")))
+                )
             }
         }
     }
@@ -98,7 +103,7 @@ public struct HomeView: View {
                         .font(.system(size: 22, weight: .black, design: .rounded))
                         .foregroundColor(.white)
                     
-                    Text("Screen Recorder & Live")
+                    Text(lang.s("home_tagline"))
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
                 }
@@ -112,7 +117,7 @@ public struct HomeView: View {
                         Image(systemName: "checkmark.seal.fill")
                             .foregroundColor(.green)
                             .font(.system(size: 13))
-                        Text("MIỄN PHÍ")
+                        Text(lang.s("free"))
                             .font(.system(size: 11, weight: .bold))
                             .foregroundColor(.white)
                     }
@@ -140,11 +145,11 @@ public struct HomeView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "sparkles")
                         .foregroundColor(.yellow)
-                    Text("Ứng dụng mở khóa toàn bộ tính năng Miễn phí")
+                    Text(lang.s("home_free_banner_title"))
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(.white)
                 }
-                Text("Quay 1080p 60fps, xóa logo, livestream không giới hạn hoàn toàn miễn phí")
+                Text(lang.s("home_free_banner_sub"))
                     .font(.system(size: 11))
                     .foregroundColor(.white.opacity(0.8))
                     .lineLimit(1)
@@ -179,7 +184,7 @@ public struct HomeView: View {
                         Circle()
                             .fill(replayKit.isRecording || replayKit.isBroadcastingSystem ? Color.red : Color.green)
                             .frame(width: 8, height: 8)
-                        Text(replayKit.isRecording || replayKit.isBroadcastingSystem ? "ĐANG GHI HÌNH" : "SẴN SÀNG")
+                        Text(replayKit.isRecording || replayKit.isBroadcastingSystem ? lang.s("status_recording") : lang.s("status_ready"))
                             .font(.system(size: 11, weight: .bold))
                             .foregroundColor(replayKit.isRecording || replayKit.isBroadcastingSystem ? .red : .green)
                     }
@@ -227,7 +232,7 @@ public struct HomeView: View {
                                 Image(systemName: replayKit.isRecording ? "stop.fill" : "record.circle")
                                     .font(.system(size: 28, weight: .bold))
                                     .foregroundColor(.white)
-                                Text(replayKit.isRecording ? "DỪNG" : "GHI HÌNH")
+                                Text(replayKit.isRecording ? lang.s("btn_stop") : lang.s("btn_record"))
                                     .font(.system(size: 10, weight: .black))
                                     .foregroundColor(.white)
                             }
@@ -241,7 +246,7 @@ public struct HomeView: View {
                     Image(systemName: "rectangle.inset.filled.and.person.filled")
                         .foregroundColor(.orange)
                         .font(.system(size: 14))
-                    Text("Quay toàn hệ thống (Game/App khác):")
+                    Text(lang.s("system_broadcast_label"))
                         .font(.system(size: 12))
                         .foregroundColor(.white.opacity(0.7))
                     
@@ -259,7 +264,7 @@ public struct HomeView: View {
                 HStack(spacing: 20) {
                     toggleButton(
                         icon: userSettings.streamSettings.enableMicrophone ? "mic.fill" : "mic.slash.fill",
-                        title: "Microphone",
+                        title: lang.s("toggle_mic"),
                         isActive: userSettings.streamSettings.enableMicrophone
                     ) {
                         userSettings.streamSettings.enableMicrophone.toggle()
@@ -267,7 +272,7 @@ public struct HomeView: View {
                     
                     toggleButton(
                         icon: userSettings.streamSettings.enableSystemAudio ? "speaker.wave.2.fill" : "speaker.slash.fill",
-                        title: "Âm thanh máy",
+                        title: lang.s("toggle_audio"),
                         isActive: userSettings.streamSettings.enableSystemAudio
                     ) {
                         userSettings.streamSettings.enableSystemAudio.toggle()
@@ -275,7 +280,7 @@ public struct HomeView: View {
                     
                     toggleButton(
                         icon: faceCam.isRunning ? "person.crop.circle.fill" : "person.crop.circle",
-                        title: "Face-Cam",
+                        title: lang.s("toggle_facecam"),
                         isActive: faceCam.isRunning
                     ) {
                         if faceCam.isRunning {
@@ -294,7 +299,7 @@ public struct HomeView: View {
             // Dừng quay trực tiếp
             replayKit.stopDirectRecording { url in
                 if url != nil {
-                    alertMessage = "Ghi màn hình hoàn tất! Video đã được lưu vào Thư viện LAICHYM."
+                    alertMessage = lang.s("record_finished_alert")
                     showAlert = true
                 }
             }
@@ -332,8 +337,8 @@ public struct HomeView: View {
     private var featureToolsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
             toolCard(
-                title: "Phát trực tiếp",
-                subtitle: "YouTube, Facebook, Twitch",
+                title: lang.s("tool_livestream"),
+                subtitle: lang.s("tool_livestream_sub"),
                 icon: "antenna.radiowaves.left.and.right",
                 gradient: [Color(red: 0.1, green: 0.4, blue: 0.9), Color(red: 0.05, green: 0.2, blue: 0.6)]
             ) {
@@ -341,8 +346,8 @@ public struct HomeView: View {
             }
             
             toolCard(
-                title: "Reaction Studio",
-                subtitle: "Lồng webcam & bình luận",
+                title: lang.s("tool_reaction"),
+                subtitle: lang.s("tool_reaction_sub"),
                 icon: "face.smiling.fill",
                 gradient: [Color(red: 0.9, green: 0.2, blue: 0.5), Color(red: 0.6, green: 0.1, blue: 0.3)]
             ) {
@@ -350,8 +355,8 @@ public struct HomeView: View {
             }
             
             toolCard(
-                title: "Chỉnh sửa Video",
-                subtitle: "Cắt, crop, lồng tiếng",
+                title: lang.s("tool_editor"),
+                subtitle: lang.s("tool_editor_sub"),
                 icon: "scissors",
                 gradient: [Color(red: 0.2, green: 0.7, blue: 0.4), Color(red: 0.1, green: 0.4, blue: 0.2)]
             ) {
@@ -359,8 +364,8 @@ public struct HomeView: View {
             }
             
             toolCard(
-                title: "Hướng dẫn cài đặt",
-                subtitle: "Bật Trung tâm điều khiển",
+                title: lang.s("tool_guide"),
+                subtitle: lang.s("tool_guide_sub"),
                 icon: "questionmark.circle.fill",
                 gradient: [Color(red: 0.4, green: 0.2, blue: 0.8), Color(red: 0.2, green: 0.1, blue: 0.5)]
             ) {
@@ -413,13 +418,13 @@ public struct HomeView: View {
     private var recentRecordingsSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("Video gần đây")
+                Text(lang.s("recent_recordings"))
                     .font(.system(size: 17, weight: .bold))
                     .foregroundColor(.white)
                 
                 Spacer()
                 
-                Text("\(storage.recordings.count) video")
+                Text("\(storage.recordings.count) videos")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(.white.opacity(0.5))
             }
@@ -430,10 +435,10 @@ public struct HomeView: View {
                         Image(systemName: "video.slash")
                             .font(.system(size: 36))
                             .foregroundColor(.white.opacity(0.3))
-                        Text("Chưa có video quay màn hình nào")
+                        Text(lang.s("no_recent_videos"))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white.opacity(0.6))
-                        Text("Nhấn nút Ghi hình ở trên để bắt đầu quay clip đầu tiên của bạn")
+                        Text(lang.s("no_recent_videos_hint"))
                             .font(.system(size: 11))
                             .foregroundColor(.white.opacity(0.4))
                             .multilineTextAlignment(.center)

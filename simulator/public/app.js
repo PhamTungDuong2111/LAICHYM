@@ -15,6 +15,7 @@
     selectedPlatform: 'youtube',
     recordDuration: 0,
     liveDuration: 0,
+    currentLang: 'vi',
     recordTimer: null,
     liveTimer: null,
     mediaRecorder: null,
@@ -144,7 +145,19 @@
     triggerOpenEditorModal: document.getElementById('triggerOpenEditorModal'),
     triggerOpenPaywallModal: document.getElementById('triggerOpenPaywallModal'),
     consoleLogs: document.getElementById('consoleLogs'),
-    btnClearLog: document.getElementById('btnClearLog')
+    btnClearLog: document.getElementById('btnClearLog'),
+
+    // Language switcher elements
+    btnHeaderLangToggle: document.getElementById('btnHeaderLangToggle'),
+    headerLangFlag: document.getElementById('headerLangFlag'),
+    headerLangText: document.getElementById('headerLangText'),
+    btnLangVI: document.getElementById('btnLangVI'),
+    btnLangEN: document.getElementById('btnLangEN'),
+    labelLangTitle: document.getElementById('labelLangTitle'),
+    triggerLangSwitch: document.getElementById('triggerLangSwitch'),
+    btnSidebarLangTitle: document.getElementById('btnSidebarLangTitle'),
+    sidebarLangStatus: document.getElementById('sidebarLangStatus'),
+    settingsPageHeading: document.getElementById('settingsPageHeading')
   };
 
   // =========================================================================
@@ -195,6 +208,202 @@
   document.getElementById('cardGoLivestream')?.addEventListener('click', () => switchTab('pageLive'));
   document.getElementById('cardGoGuide')?.addEventListener('click', () => switchTab('pageSettings'));
   document.getElementById('openSettingsFromHeader')?.addEventListener('click', () => switchTab('pageSettings'));
+
+  // =========================================================================
+  // BILINGUAL LOCALIZATION (i18n: Tiếng Việt 🇻🇳 & English 🇺🇸)
+  // =========================================================================
+  const i18n = {
+    vi: {
+      statusReady: 'SẴN SÀNG',
+      statusRecording: 'ĐANG GHI HÌNH',
+      btnRecord: 'GHI HÌNH',
+      btnStop: 'DỪNG GHI',
+      recordHint: 'Chạm để chọn màn hình quay thử nghiệm thực tế',
+      recordHintActive: 'Đang ghi toàn màn hình... Nhấn để dừng',
+      tabHome: 'Trang chủ',
+      tabLive: 'Trực tiếp',
+      tabLibrary: 'Thư viện',
+      tabSettings: 'Cài đặt',
+      freeBadge: 'MIỄN PHÍ',
+      freeBannerBadge: '✨ BẢN QUYỀN VĨNH VIỄN',
+      freeBannerTitle: 'LAICHYM Hoàn Toàn Miễn Phí',
+      freeBannerSub: 'Mở khóa 1080p 60fps, tắt logo bản quyền, livestream không giới hạn không mất tiền',
+      micToggle: 'Microphone',
+      audioToggle: 'Âm thanh máy',
+      facecamToggle: 'Face-Cam',
+      toolLive: 'Phát trực tiếp',
+      toolLiveSub: 'YouTube, FB, Twitch',
+      toolReaction: 'Reaction Studio',
+      toolReactionSub: 'Webcam & bình luận',
+      toolEditor: 'Chỉnh sửa Video',
+      toolEditorSub: 'Cắt, crop, lồng tiếng',
+      toolGuide: 'Bật Control Center',
+      toolGuideSub: 'Hướng dẫn iOS',
+      recentTitle: 'Video gần đây',
+      liveTitle: 'Phát Trực Tiếp (RTMP)',
+      liveHelpTitle: 'Cách lấy Stream Key',
+      liveServerLabel: 'URL máy chủ RTMP:',
+      liveKeyLabel: 'Khóa luồng (Stream Key):',
+      liveTestBtn: '⚡ Kiểm tra kết nối RTMP',
+      liveStartBtn: '📡 BẮT ĐẦU PHÁT TRỰC TIẾP',
+      liveStopBtn: '⏹ DỪNG PHÁT TRỰC TIẾP',
+      liveTesting: 'Đang kiểm tra kết nối...',
+      settingsHeading: 'Cài Đặt & Hướng Dẫn',
+      langTitle: 'Ngôn ngữ hiển thị (Display Language)',
+      sidebarLangTitle: 'Đổi Ngôn Ngữ / Switch Language',
+      sidebarLangStatus: 'Đang dùng: 🇻🇳 Tiếng Việt (Bấm để đổi English)',
+      editorTitle: 'Trình Biên Tập Video',
+      editorExportBtn: '💾 XUẤT VIDEO ĐÃ CHỈNH SỬA',
+      editorExporting: 'Đang xuất video...',
+      videoDetailTitle: 'Chi tiết video',
+      downloadBtn: 'Tải về máy (.mp4)',
+      editBtn: 'Chỉnh sửa video',
+      deleteBtn: 'Xóa video',
+      alertSaved: 'Video đã được xuất và lưu vào thư viện!',
+      alertRecordSuccess: 'Đã hoàn thành ghi hình! Video được lưu vào Thư viện.'
+    },
+    en: {
+      statusReady: 'READY',
+      statusRecording: 'RECORDING',
+      btnRecord: 'RECORD',
+      btnStop: 'STOP',
+      recordHint: 'Tap to select screen for real capture test',
+      recordHintActive: 'Recording screen... Tap to stop',
+      tabHome: 'Home',
+      tabLive: 'Live',
+      tabLibrary: 'Library',
+      tabSettings: 'Settings',
+      freeBadge: 'FREE',
+      freeBannerBadge: '✨ LIFETIME LICENSE',
+      freeBannerTitle: 'LAICHYM 100% Free Forever',
+      freeBannerSub: 'Unlocked 1080p 60fps, no watermark, unlimited live streaming at zero cost',
+      micToggle: 'Microphone',
+      audioToggle: 'Device Audio',
+      facecamToggle: 'Face-Cam',
+      toolLive: 'Livestream',
+      toolLiveSub: 'YouTube, FB, Twitch',
+      toolReaction: 'Reaction Studio',
+      toolReactionSub: 'Webcam & commentary',
+      toolEditor: 'Video Editor',
+      toolEditorSub: 'Trim, crop, voiceover',
+      toolGuide: 'Control Center',
+      toolGuideSub: 'iOS Setup Guide',
+      recentTitle: 'Recent Recordings',
+      liveTitle: 'Livestream (RTMP/RTMPS)',
+      liveHelpTitle: 'How to get Stream Key',
+      liveServerLabel: 'RTMP Server URL:',
+      liveKeyLabel: 'Stream Key:',
+      liveTestBtn: '⚡ Test RTMP Connection',
+      liveStartBtn: '📡 START LIVESTREAM',
+      liveStopBtn: '⏹ STOP LIVESTREAM',
+      liveTesting: 'Testing connection...',
+      settingsHeading: 'Settings & Setup Guide',
+      langTitle: 'Display Language / Ngôn ngữ',
+      sidebarLangTitle: 'Switch Language (EN / VI)',
+      sidebarLangStatus: 'Current: 🇺🇸 English (Click to switch Tiếng Việt)',
+      editorTitle: 'Video Editor Studio',
+      editorExportBtn: '💾 EXPORT EDITED VIDEO',
+      editorExporting: 'Exporting video...',
+      videoDetailTitle: 'Video Details',
+      downloadBtn: 'Download (.mp4)',
+      editBtn: 'Edit Video',
+      deleteBtn: 'Delete Video',
+      alertSaved: 'Video successfully exported and saved to library!',
+      alertRecordSuccess: 'Recording finished! Video saved to Library.'
+    }
+  };
+
+  function setLanguage(lang) {
+    state.currentLang = lang;
+    const t = i18n[lang];
+    if (!t) return;
+
+    // Header Language Toggle
+    if (el.headerLangFlag) el.headerLangFlag.textContent = lang === 'vi' ? '🇻🇳' : '🇺🇸';
+    if (el.headerLangText) el.headerLangText.textContent = lang === 'vi' ? 'VI' : 'EN';
+
+    // Settings Language Buttons
+    el.btnLangVI?.classList.toggle('active', lang === 'vi');
+    el.btnLangEN?.classList.toggle('active', lang === 'en');
+
+    // Sidebar
+    if (el.sidebarLangStatus) el.sidebarLangStatus.textContent = t.sidebarLangStatus;
+    if (el.btnSidebarLangTitle) el.btnSidebarLangTitle.textContent = t.sidebarLangTitle;
+
+    // Tabs
+    const tabLabels = document.querySelectorAll('.ios-tab-bar .tab-btn .tab-label');
+    if (tabLabels.length >= 4) {
+      tabLabels[0].textContent = t.tabHome;
+      tabLabels[1].textContent = t.tabLive;
+      tabLabels[2].textContent = t.tabLibrary;
+      tabLabels[3].textContent = t.tabSettings;
+    }
+
+    // Home Record Card
+    if (!state.isRecording) {
+      el.statusLabel.textContent = t.statusReady;
+      el.recordBtnText.textContent = t.btnRecord;
+      el.recordHintText.textContent = t.recordHint;
+    } else {
+      el.statusLabel.textContent = t.statusRecording;
+      el.recordBtnText.textContent = t.btnStop;
+      el.recordHintText.textContent = t.recordHintActive;
+    }
+
+    // Free Banner
+    const freeBadge = document.querySelector('.vip-badge-small');
+    if (freeBadge) freeBadge.textContent = t.freeBannerBadge;
+    const freeTitle = document.querySelector('.vip-banner-content h4');
+    if (freeTitle) freeTitle.textContent = t.freeBannerTitle;
+    const freeDesc = document.querySelector('.vip-banner-content p');
+    if (freeDesc) freeDesc.textContent = t.freeBannerSub;
+
+    // Home Tool Cards
+    const liveCardH4 = document.querySelector('#cardGoLivestream .tool-info h4');
+    const liveCardP = document.querySelector('#cardGoLivestream .tool-info p');
+    if (liveCardH4) liveCardH4.textContent = t.toolLive;
+    if (liveCardP) liveCardP.textContent = t.toolLiveSub;
+
+    const reactCardH4 = document.querySelector('#cardGoReaction .tool-info h4');
+    const reactCardP = document.querySelector('#cardGoReaction .tool-info p');
+    if (reactCardH4) reactCardH4.textContent = t.toolReaction;
+    if (reactCardP) reactCardP.textContent = t.toolReactionSub;
+
+    const editCardH4 = document.querySelector('#cardGoEditor .tool-info h4');
+    const editCardP = document.querySelector('#cardGoEditor .tool-info p');
+    if (editCardH4) editCardH4.textContent = t.toolEditor;
+    if (editCardP) editCardP.textContent = t.toolEditorSub;
+
+    const guideCardH4 = document.querySelector('#cardGoGuide .tool-info h4');
+    const guideCardP = document.querySelector('#cardGoGuide .tool-info p');
+    if (guideCardH4) guideCardH4.textContent = t.toolGuide;
+    if (guideCardP) guideCardP.textContent = t.toolGuideSub;
+
+    // Home Quick Toggles
+    const toggleSpans = document.querySelectorAll('.hero-quick-toggles .quick-toggle-btn span');
+    if (toggleSpans.length >= 3) {
+      toggleSpans[0].textContent = t.micToggle;
+      toggleSpans[1].textContent = t.audioToggle;
+      toggleSpans[2].textContent = t.facecamToggle;
+    }
+
+    // Recent Section Title
+    const recentH3 = document.querySelector('.recent-section .section-head h3');
+    if (recentH3) recentH3.textContent = t.recentTitle;
+
+    // Live Page Title & Buttons
+    const livePageHeading = document.querySelector('#pageLive .page-title-bar h2');
+    if (livePageHeading) livePageHeading.textContent = t.liveTitle;
+    if (el.btnLiveText && !state.isLiveStreaming) el.btnLiveText.textContent = t.liveStartBtn;
+    if (el.btnLiveText && state.isLiveStreaming) el.btnLiveText.textContent = t.liveStopBtn;
+    if (el.btnTestRtmp) el.btnTestRtmp.textContent = t.liveTestBtn;
+
+    // Settings Heading & Labels
+    if (el.settingsPageHeading) el.settingsPageHeading.textContent = t.settingsHeading;
+    if (el.labelLangTitle) el.labelLangTitle.textContent = t.langTitle;
+
+    log(`[Language] Chuyển đổi ngôn ngữ thành công: ${lang === 'vi' ? 'Tiếng Việt 🇻🇳' : 'English 🇺🇸'}`, 'success');
+  }
 
   // =========================================================================
   // DYNAMIC ISLAND CONTROLLER
@@ -806,9 +1015,19 @@
   el.openPaywallFromHeader?.addEventListener('click', openPaywall);
   el.triggerOpenPaywallModal?.addEventListener('click', openPaywall);
 
-  // Clear Logs
+  // Language Selector Listeners
+  el.btnHeaderLangToggle?.addEventListener('click', () => {
+    setLanguage(state.currentLang === 'vi' ? 'en' : 'vi');
+  });
+  el.btnLangVI?.addEventListener('click', () => setLanguage('vi'));
+  el.btnLangEN?.addEventListener('click', () => setLanguage('en'));
+  el.triggerLangSwitch?.addEventListener('click', () => {
+    setLanguage(state.currentLang === 'vi' ? 'en' : 'vi');
+  });
+
+  // Clear Log Listener
   el.btnClearLog?.addEventListener('click', () => {
-    el.consoleLogs.innerHTML = '';
+    if (el.consoleLogs) el.consoleLogs.innerHTML = '';
   });
 
   // Initial Render
